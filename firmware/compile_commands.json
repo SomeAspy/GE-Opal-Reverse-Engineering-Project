@@ -156,7 +156,19 @@
         "output": ".pio/build/nano/libeec/EmonLib/EmonLib.cpp.o"
     },
     {
-        "command": "/home/aiden/.platformio/packages/toolchain-atmelavr/bin/avr-g++ -o .pio/build/nano/src/main.cpp.o -c -fno-exceptions -fno-threadsafe-statics -fpermissive -std=gnu++11 -mmcu=atmega328p -Os -Wall -ffunction-sections -fdata-sections -flto -DPLATFORMIO=60119 -DARDUINO_AVR_NANO -DF_CPU=16000000L -DARDUINO_ARCH_AVR -DARDUINO=10808 -Iinclude -Isrc -I.pio/libdeps/nano/EmonLib -I/home/aiden/.platformio/packages/framework-arduino-avr/cores/arduino -I/home/aiden/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs src/main.cpp",
+        "command": "/home/aiden/.platformio/packages/toolchain-atmelavr/bin/avr-g++ -o .pio/build/nano/lib212/Wire/Wire.cpp.o -c -fno-exceptions -fno-threadsafe-statics -fpermissive -std=gnu++11 -mmcu=atmega328p -Os -Wall -ffunction-sections -fdata-sections -flto -DPLATFORMIO=60119 -DARDUINO_AVR_NANO -DF_CPU=16000000L -DARDUINO_ARCH_AVR -DARDUINO=10808 -I/home/aiden/.platformio/packages/framework-arduino-avr/libraries/Wire/src -I/home/aiden/.platformio/packages/framework-arduino-avr/cores/arduino -I/home/aiden/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs /home/aiden/.platformio/packages/framework-arduino-avr/libraries/Wire/src/Wire.cpp",
+        "directory": "/home/aiden/repos/GE-Opal-2-fixes/firmware",
+        "file": "/home/aiden/.platformio/packages/framework-arduino-avr/libraries/Wire/src/Wire.cpp",
+        "output": ".pio/build/nano/lib212/Wire/Wire.cpp.o"
+    },
+    {
+        "command": "/home/aiden/.platformio/packages/toolchain-atmelavr/bin/avr-gcc -o .pio/build/nano/lib212/Wire/utility/twi.c.o -c -std=gnu11 -fno-fat-lto-objects -mmcu=atmega328p -Os -Wall -ffunction-sections -fdata-sections -flto -DPLATFORMIO=60119 -DARDUINO_AVR_NANO -DF_CPU=16000000L -DARDUINO_ARCH_AVR -DARDUINO=10808 -I/home/aiden/.platformio/packages/framework-arduino-avr/libraries/Wire/src -I/home/aiden/.platformio/packages/framework-arduino-avr/cores/arduino -I/home/aiden/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs /home/aiden/.platformio/packages/framework-arduino-avr/libraries/Wire/src/utility/twi.c",
+        "directory": "/home/aiden/repos/GE-Opal-2-fixes/firmware",
+        "file": "/home/aiden/.platformio/packages/framework-arduino-avr/libraries/Wire/src/utility/twi.c",
+        "output": ".pio/build/nano/lib212/Wire/utility/twi.c.o"
+    },
+    {
+        "command": "/home/aiden/.platformio/packages/toolchain-atmelavr/bin/avr-g++ -o .pio/build/nano/src/main.cpp.o -c -fno-exceptions -fno-threadsafe-statics -fpermissive -std=gnu++11 -mmcu=atmega328p -Os -Wall -ffunction-sections -fdata-sections -flto -DPLATFORMIO=60119 -DARDUINO_AVR_NANO -DF_CPU=16000000L -DARDUINO_ARCH_AVR -DARDUINO=10808 -Isrc -I/home/aiden/.platformio/packages/framework-arduino-avr/libraries/Wire/src -I.pio/libdeps/nano/EmonLib -I/home/aiden/.platformio/packages/framework-arduino-avr/cores/arduino -I/home/aiden/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs src/main.cpp",
         "directory": "/home/aiden/repos/GE-Opal-2-fixes/firmware",
         "file": "src/main.cpp",
         "output": ".pio/build/nano/src/main.cpp.o"

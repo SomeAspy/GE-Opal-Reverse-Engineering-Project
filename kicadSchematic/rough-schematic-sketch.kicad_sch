@@ -3912,6 +3912,16 @@
 		)
 		(uuid "42a5f0a3-edd9-4da0-9bce-f692c5c72358")
 	)
+	(text "When active, will hit about 1.6v"
+		(exclude_from_sim no)
+		(at 149.606 149.098 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "6c0e8c80-ff3d-489d-981e-935b1591d8bc")
+	)
 	(text "Be careful how you source 12V here!!!\nSay, using a buck converter your\n5V powersource will backfeed from\nthe arduino when the machine is unplugged\nyou will probably get Welder's Flash\nfrom the light if you try to inspect it\n(ask me how I know)"
 		(exclude_from_sim no)
 		(at 258.826 100.076 0)
@@ -3968,7 +3978,7 @@
 		(at 144.78 160.02)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "912f3269-691c-4a7f-af05-97cc3c8b695a")
+		(uuid "b652b449-cf50-409a-88ba-6a6988469bde")
 	)
 	(junction
 		(at 91.44 82.55)
@@ -4074,16 +4084,6 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 160.02) (xy 144.78 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "159d7dd5-bd9f-490b-9138-3bb131457af4")
-	)
-	(wire
-		(pts
 			(xy 110.49 99.06) (xy 110.49 135.89)
 		)
 		(stroke
@@ -4091,16 +4091,6 @@
 			(type default)
 		)
 		(uuid "17be01a5-109e-4b6f-aab1-f2290031e534")
-	)
-	(wire
-		(pts
-			(xy 149.86 146.05) (xy 149.86 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "19a40110-0e15-42b2-a37d-445d43929cd2")
 	)
 	(wire
 		(pts
@@ -4131,6 +4121,16 @@
 			(type default)
 		)
 		(uuid "319560c0-d267-483e-8558-dd19b12a4c34")
+	)
+	(wire
+		(pts
+			(xy 144.78 160.02) (xy 170.18 160.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3974f1d2-a54d-425c-8e38-8484580db0fe")
 	)
 	(wire
 		(pts
@@ -4204,13 +4204,13 @@
 	)
 	(wire
 		(pts
-			(xy 132.08 111.76) (xy 132.08 146.05)
+			(xy 170.18 96.52) (xy 157.48 96.52)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "460deba3-a58f-4dd2-8b46-f9fce2d5cf24")
+		(uuid "4498ae26-1054-40bb-bd31-bba528d7abe9")
 	)
 	(wire
 		(pts
@@ -4604,6 +4604,16 @@
 	)
 	(wire
 		(pts
+			(xy 170.18 160.02) (xy 170.18 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b614d9ad-ba83-4f92-97d3-075cb6ce63cf")
+	)
+	(wire
+		(pts
 			(xy 186.69 134.62) (xy 124.46 134.62)
 		)
 		(stroke
@@ -4611,16 +4621,6 @@
 			(type default)
 		)
 		(uuid "bca672fc-5cc2-456f-b56c-28b73a918e55")
-	)
-	(wire
-		(pts
-			(xy 132.08 146.05) (xy 149.86 146.05)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cec67302-8b08-4b58-b4d4-49be162122e3")
 	)
 	(wire
 		(pts
@@ -5491,7 +5491,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10kΩ"
+		(property "Value" "1MΩ"
 			(at 147.32 165.0999 0)
 			(show_name no)
 			(do_not_autoplace no)
