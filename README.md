@@ -66,21 +66,23 @@ More importantly, several members of the community have taken attempts to repair
 
 # Nominal voltages recorded from the opal 2 ice maker during operation
 
-| Part                    | Connector Type          | Voltage |
-| ----------------------- | ----------------------- | ------- |
-| UV Light                | JST XH 2-pin connector  | 12V DC  |
-| Compressor              | JST VHR 3-pin connector | 120V AC |
-| Auger Motor             | JST VHR 3-pin connector | 120V AC |
-| Pump                    | JST XH 2-pin connector  | 12V DC  |
-| Fan                     | JST XH 2-pin connector  | 12V DC  |
-| WiFi Board              | TBD                     | TBD     |
-| Front Panel             | TBD                     | TBD     |
-| Ice Box LED             | JST XH 2-pin connector  | 5V DC   |
-| Ice box presence switch | JST XH 2-pin connector  | 5V DC   |
-| Internal Tank Floats    | JST XH 4-pin connector  | 5V DC   |
-| IR LED For Capacity     | JST XH 2-pin connector  | 5V DC   |
-| IR Receiver             | JST XH 2-pin connector  | 5V DC   |
-| AC Input                | JST VHR 3-pin connector | 120V AC |
+| Part                    | Connector Type          | Voltage  |
+| ----------------------- | ----------------------- | -------- |
+| UV Light                | JST XH 2-pin connector  | 12V DC   |
+| Compressor              | JST VHR 3-pin connector | 120V AC  |
+| Auger Motor             | JST VHR 3-pin connector | 120V AC  |
+| Pump                    | JST XH 2-pin connector  | 12V DC   |
+| Fan                     | JST XH 2-pin connector  | 12V DC   |
+| WiFi Board              | TBD (5 pins)            | TBD      |
+| Front Panel             | TBD (4 pins)            | 5V + I2C |
+| Ice Box LED             | JST XH 2-pin connector  | 5V DC    |
+| Ice box presence switch | JST XH 2-pin connector  | 5V DC    |
+| Internal Tank Floats    | JST XH 4-pin connector  | 5V DC    |
+| IR LED For Capacity     | JST XH 2-pin connector  | 5V DC    |
+| IR Receiver             | JST XH 2-pin connector  | 5V DC    |
+| AC Input                | JST VHR 3-pin connector | 120V AC  |
+
+- I2C protocols documented in [./i2c.md](./i2c.md)
 
 - Internal Tank Floats (4 wires, 2 floats)
   - Black & Red: Lower float (float low = closed circuit)
