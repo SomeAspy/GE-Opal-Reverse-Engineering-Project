@@ -24,11 +24,12 @@ Note that holding buttons fires both the initial button pressed code and then th
 
 For example, pressing and holding power:
 
-1. `0x03` fired
-2. Power button is held for 3 seconds
-3. `0x04` fired
-4. Power button released
-5. `0x00` fired
+1. Power button detects interaction
+2. `0x03` fired
+3. Power button is held for 3 seconds
+4. `0x04` fired
+5. Power button released
+6. `0x00` fired
 
 I popped the microcontroller on my original front panel that also had `Descale` and `Sanitize` LEDs. The replacement board I got does not have these LEDs, so I am unable to reverse engineer the codes as of now.
 
