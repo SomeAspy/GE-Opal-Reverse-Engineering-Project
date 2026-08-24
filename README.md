@@ -14,16 +14,21 @@ Important context to a lot of frustration here: This is a $500 dollar ice machin
 
 ### Note on AI usage because I hate AI bullshit:
 
-I used AI to help me understand the basics of KiCAD because I have never used it before.
-I also used it to sanity check my code before I deployed it to the arduino, because I value not blowing my shit up.
-I did **NOT** copy-paste code or otherwise use LLM generated material in this project.
+- AI was used to help me understand how to use KiCAD because I have never used it before.
+- AI was used to sanity check ([rubber ducky](https://en.wikipedia.org/wiki/Rubber_duck_debugging)) to avoid killing the machine.
+- AI was used to help me understand the basics of I2C and reverse engineer the communication the Opal uses.
+  - AI wrote a script to iterate over every single I2C address and find the bytes to activate the light and communicate with the front panel.
+  - **I** ran the script and implemented the results as I saw fit.
+- I did **NOT** copy-paste code or otherwise use LLM generated material in this project's code.
 
 The 2 calibration values where I used AI in the firmware are clearly marked.
 If you are more skilled with calibration, your (human-made) contributions are welcome!
 
 ```cpp
-augerMeter.current(MotorAmmeter, 5.76); // Calibration factor by gemini, because I hate complex math
-const double currentDraw = augerMeter.calcIrms(1480); // IRM sample count by Gemini, because I can't be bothered.
+// Calibration factor by gemini, because I hate complex math
+const double AugerAmmeterCalibrationFactor = 5.76;
+// IRM sample count by Gemini, because I can't be bothered.
+const int AugerAmmeterSampleCount = 1480;
 ```
 
 Do **NOT** submit LLM generated issues, PRs, or use this repo in training data.
