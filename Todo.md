@@ -1,0 +1,3 @@
+- Make full schematic
+- Design PCB
+- Possible on-the-fly auto-calibration of the current sensor (https://github.com/ElectroRush4u/ACS712) ?

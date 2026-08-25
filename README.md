@@ -12,16 +12,15 @@ Important context to a lot of frustration here: This is a $500 dollar ice machin
 > [!WARNING]  
 > Schematics and code are not final or tested yet.
 
-### Note on AI usage because I hate AI bullshit:
+### LLM Policy and usage in this project:
 
-- AI was used to help me understand how to use KiCAD because I have never used it before.
-- AI was used to sanity check ([rubber ducky](https://en.wikipedia.org/wiki/Rubber_duck_debugging)) to avoid killing the machine.
-- AI was used to help me understand the basics of I2C and reverse engineer the communication the Opal uses.
-  - AI wrote a script to iterate over every single I2C address and find the bytes to activate the light and communicate with the front panel.
-  - **I** ran the script and implemented the results as I saw fit.
 - I did **NOT** copy-paste code or otherwise use LLM generated material in this project's code.
+- An LLM was used to help me understand how to use KiCAD because I have never used it before.
+- An LLM was used to sanity check ([rubber ducky](https://en.wikipedia.org/wiki/Rubber_duck_debugging)) to avoid killing the machine.
+- An LLM was used to help me understand the basics of I2C and reverse engineer the communication the Opal uses.
+  - **I** implemented the I2C communications in the firmware.
 
-The 2 calibration values where I used AI in the firmware are clearly marked.
+The 2 calibration values where I used an LLM in the firmware are clearly marked.
 If you are more skilled with calibration, your (human-made) contributions are welcome!
 
 ```cpp
