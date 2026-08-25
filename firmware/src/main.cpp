@@ -2,12 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // https://github.com/someaspy/GE-Opal-2-fixes
 
-// Eventually I want this code to use the front panel that came with the
-// machine, but the LED driver on the daughterboard died so I have to wait for a
-// new one to come in
-// This is also the case with the bin LED, which I fried by putting 12v through
-// it
-
 #include "HardwareSerial.h"
 #include <Arduino.h>
 #include <EmonLib.h>
@@ -15,24 +9,23 @@
 
 // Pins
 
-const int BinSwitch = 3;
-const int TankFull = 5;
-const int TankEmpty = 6;
-const int IrBlaster = 7;
-const int Compressor = 8;
-const int Auger = 9;
-const int Fan = 10;
-const int UvLed = 11;
-const int Pump = 12;
-const int MotorAmmeter = A0;
+const int BinSwitchPin = 3;
+const int TankFullPin = 5;
+const int TankEmptyPin = 6;
+const int IrBlasterPin = 7;
+const int CompressorPin = 8;
+const int AugerPin = 9;
+const int FanPin = 10;
+const int UvLedPin = 11;
+const int PumpPin = 12;
+const int MotorAmmeterPin = A0;
 // Using analog because the voltage isn't enough to trigger digital high (~1.6v)
-const int IrReceiver = A1;
+const int IrReceiverPin = A1;
 
 // Front Panel
 const byte FrontPanel = 0x60;
 
 // Bitmasks sent to Front panel
-
 const byte CleanLed = 0x01;
 const byte LightLed = 0x02;
 const byte PowerLed = 0x04;
@@ -62,7 +55,8 @@ const unsigned long pumpTimeout = 120000; // 2m - Filter can drop flow a lot
 const unsigned long compressorTimeout = 300000; // 5m
 
 // From testing the machine usually settles around 0.45A to 0.48A.
-// 0.05 means the compressor is off.
+// 0.05 means the compressor is off. This probably means we have a calibration
+// error.
 // Note currentDrawLimit is ignored when the compressor first starts to
 // accomodate inrush current. Tweak as needed.
 const float currentDrawLimit = 0.50;
@@ -81,23 +75,23 @@ void setup() {
   Wire.begin();
 
   // Grounded inputs need to be pulled up
-  pinMode(BinSwitch, INPUT_PULLUP);
-  pinMode(TankFull, INPUT_PULLUP);
-  pinMode(TankEmpty, INPUT_PULLUP);
+  pinMode(BinSwitchPin, INPUT_PULLUP);
+  pinMode(TankFullPin, INPUT_PULLUP);
+  pinMode(TankEmptyPin, INPUT_PULLUP);
 
   // Standard inputs
-  pinMode(IrReceiver, INPUT);
-  pinMode(MotorAmmeter, INPUT);
+  pinMode(IrReceiverPin, INPUT);
+  pinMode(MotorAmmeterPin, INPUT);
 
   // Outputs
-  pinMode(IrBlaster, OUTPUT);
-  pinMode(Compressor, OUTPUT);
-  pinMode(Auger, OUTPUT);
-  pinMode(Fan, OUTPUT);
-  pinMode(UvLed, OUTPUT);
-  pinMode(Pump, OUTPUT);
+  pinMode(IrBlasterPin, OUTPUT);
+  pinMode(CompressorPin, OUTPUT);
+  pinMode(AugerPin, OUTPUT);
+  pinMode(FanPin, OUTPUT);
+  pinMode(UvLedPin, OUTPUT);
+  pinMode(PumpPin, OUTPUT);
 
-  augerMeter.current(MotorAmmeter, AugerAmmeterCalibrationFactor);
+  augerMeter.current(MotorAmmeterPin, AugerAmmeterCalibrationFactor);
 };
 
 // Front panel communication
@@ -132,9 +126,9 @@ bool isLightOn = false;
 void loop() {
   // DIGITAL READS ARE INVERTED BECAUSE WE PULL UP!!!
   // Read values for the current cycle
-  const bool isTankFull = digitalRead(TankFull) == LOW;
-  const bool isTankEmpty = digitalRead(TankEmpty) == LOW;
-  const bool isBinInserted = digitalRead(BinSwitch) == LOW;
+  const bool isTankFull = digitalRead(TankFullPin) == LOW;
+  const bool isTankEmpty = digitalRead(TankEmptyPin) == LOW;
+  const bool isBinInserted = digitalRead(BinSwitchPin) == LOW;
 
   const double currentDraw = augerMeter.calcIrms(AugerAmmeterSampleCount);
 
@@ -182,13 +176,13 @@ void loop() {
   bool IrReceiving = false;
 
   // IR Receiver needs a moment to register it's state
-  digitalWrite(IrBlaster, HIGH);
+  digitalWrite(IrBlasterPin, HIGH);
   delay(4);
-  const int IrVoltage = analogRead(IrReceiver);
+  const int IrVoltage = analogRead(IrReceiverPin);
   if (IrVoltage >= 200) { // Around 1v
     IrReceiving = true;
   }
-  digitalWrite(IrBlaster, LOW);
+  digitalWrite(IrBlasterPin, LOW);
 
   Serial.println(currentDraw);
   if (IrReceiving == true) {
@@ -199,11 +193,11 @@ void loop() {
   // When the machine should be stopped
   if (!isPowered || tankEmptyHalt || defrostCycle || binFull) {
     Serial.println("Halted");
-    digitalWrite(Pump, LOW);
-    digitalWrite(Compressor, LOW);
-    digitalWrite(Fan, LOW);
-    digitalWrite(UvLed, LOW);
-    digitalWrite(Auger, LOW);
+    digitalWrite(PumpPin, LOW);
+    digitalWrite(CompressorPin, LOW);
+    digitalWrite(FanPin, LOW);
+    digitalWrite(UvLedPin, LOW);
+    digitalWrite(AugerPin, LOW);
     pumping = false;
 
     // Start compressor cooldown
@@ -243,8 +237,8 @@ void loop() {
   // Don't stop pumping once the lower float rises, so we can fill it up to the
   // upper float to save pump spam
   if (isTankEmpty && !pumping) {
-    digitalWrite(UvLed, HIGH);
-    digitalWrite(Pump, HIGH);
+    digitalWrite(UvLedPin, HIGH);
+    digitalWrite(PumpPin, HIGH);
 
     pumping = true;
     pumpStartedTime = millis();
@@ -252,8 +246,8 @@ void loop() {
 
   // Stop the pump when the upper float triggers
   if (isTankFull && pumping) {
-    digitalWrite(UvLed, LOW);
-    digitalWrite(Pump, LOW);
+    digitalWrite(UvLedPin, LOW);
+    digitalWrite(PumpPin, LOW);
     pumping = false;
   }
 
@@ -283,9 +277,9 @@ void loop() {
     if (binCheck != 0) {
       return;
     }
-    digitalWrite(Compressor, HIGH);
-    digitalWrite(Fan, HIGH);
-    digitalWrite(Auger, HIGH);
+    digitalWrite(CompressorPin, HIGH);
+    digitalWrite(FanPin, HIGH);
+    digitalWrite(AugerPin, HIGH);
     compressorStartTime = millis();
     isCompressorRunning = true;
   }
