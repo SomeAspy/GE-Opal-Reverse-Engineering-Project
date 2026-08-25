@@ -1,4 +1,4 @@
-# GE-Opal-2-fixes
+# GE-Opal-Reverse-Engineering-Project
 
 This repository documents, all my attempts to make the GE Opal 2 not kill itself
 (More specifically, the *GE Profile:tm: Opal:tm: 2.0 Ultra Nugget Ice Maker )
