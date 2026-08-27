@@ -3,7 +3,7 @@
 After my machine started making noise, I determined it seemed to be coming from where the shaft of the auger meets the housing.
 
 The housing at the top of the auger appears to have a plastic bushing, which in my case seemed in bad shape
-![scratched bushing](./images/scratchedBushing.png)
+![scratched bushing](../images/scratchedBushing.png)
 
 I attempted to remove the plastic bushing, to attempt replacing it with a proper bearing but was unable to get it out.
 
@@ -15,6 +15,6 @@ This is also a good time to inspect the auger and housing for damage/scale. In m
 You should spread the grease, so you dont have a big blob that will just be scraped off when its inserted.
 You can do it with your fingers or a small tool.
 
-![greased shaft top](./images/greasedShaftTop.jpg)
-![greased bushing](./images/greasedBushing.jpg)
-![greased bushing](./images/greaseSpread.jpg)
+![greased shaft top](../images/greasedShaftTop.jpg)
+![greased bushing](../images/greasedBushing.jpg)
+![greased bushing](../images/greaseSpread.jpg)
