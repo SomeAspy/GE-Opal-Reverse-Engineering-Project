@@ -19,7 +19,7 @@ Important context to a lot of frustration here: This is a $500 dollar ice machin
     - [`kicadSchematic/`](./custom-pcb/prototype/kicadSchematic) - Directory containing the KiCAD files for the prototype schematic.
     - [`prototype-parts.md`](./custom-pcb/prototype/prototype-parts.md) - A list of the exact modules I used for prototyping
     - [`SchematicExport.pdf`](./custom-pcb/prototype/SchematicExport.pdf) - A human readable version of the schematic, made by printing to PDF from KiCAD
-- [`attribution.md`](./attribution.md) - Links and refernces used for files
+- [`attribution.md`](./attribution.md) - Links and references used for files
 
 ## The Prototype
 
