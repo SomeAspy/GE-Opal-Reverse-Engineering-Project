@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // https://github.com/someaspy/GE-Opal-2-fixes
 
+#include "Arduino.h"
 #include "constants.h"
 #include <EmonLib.h>
 #include <Wire.h>
@@ -9,6 +10,8 @@
 
 namespace {
 EnergyMonitor augerMeter;
+
+bool isCleaning = false;
 
 // Front panel communication
 unsigned long lastPanelCommunication = 0;
@@ -76,22 +79,6 @@ void loop() {
 
   if (millis() - lastPanelCommunication > i2c_communication_delay) {
     lastPanelCommunication = millis();
-    uint8_t currentLights = 0x0;
-    if (isPowered) {
-      currentLights |= led::power_button;
-    }
-    if (defrostCycle) {
-      currentLights |= led::defrosting;
-    }
-    if (tankEmptyHalt) {
-      currentLights |= led::add_water;
-    }
-    if (isLightOn) {
-      currentLights |= led::light_button;
-    }
-    if (isCompressorRunning) {
-      currentLights |= led::making_ice;
-    }
 
     Wire.requestFrom(front_panel_i2c_address, static_cast<uint8_t>(1));
     if (Wire.available()) {
@@ -107,10 +94,35 @@ void loop() {
             isLightOn = !isLightOn;
             digitalWrite(pin::bin_led, isLightOn);
             break;
+          case button::clean_held:
+            isCleaning = true;
+            break;
+          case button::clean:
+            isCleaning = false;
+            break;
           default:;
           }
         }
         lastButtonPress = buttonCode;
+      }
+      uint8_t currentLights = 0x0;
+      if (isPowered) {
+        currentLights |= led::power_button;
+      }
+      if (defrostCycle) {
+        currentLights |= led::defrosting;
+      }
+      if (tankEmptyHalt) {
+        currentLights |= led::add_water;
+      }
+      if (isLightOn) {
+        currentLights |= led::light_button;
+      }
+      if (isCompressorRunning) {
+        currentLights |= led::making_ice;
+      }
+      if (isCleaning) {
+        currentLights |= led::cleaning | led::clean_button;
       }
       Wire.beginTransmission(front_panel_i2c_address);
       Wire.write(currentLights);
@@ -130,11 +142,16 @@ void loop() {
   digitalWrite(pin::ir_blaster, false);
 
   // When the machine should be stopped
-  if (!isPowered || tankEmptyHalt || defrostCycle || binFull) {
-    digitalWrite(pin::pump, false);
+  if (!isPowered || tankEmptyHalt || defrostCycle || binFull || isCleaning) {
+    if (!isCleaning) {
+      digitalWrite(pin::pump, false);
+      digitalWrite(pin::uv_led, false);
+    } else {
+      digitalWrite(pin::pump, true);
+      digitalWrite(pin::uv_led, true);
+    }
     digitalWrite(pin::compressor, false);
     digitalWrite(pin::fan, false);
-    digitalWrite(pin::uv_led, false);
     digitalWrite(pin::auger, false);
     pumping = false;
 

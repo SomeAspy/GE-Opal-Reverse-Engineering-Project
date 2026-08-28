@@ -25,7 +25,6 @@ constexpr uint8_t ir_receiver = A1;
 constexpr uint8_t front_panel_i2c_address = 0x60;
 
 // Bitmasks sent to Front panel
-
 namespace led {
 constexpr uint8_t clean_button = 0x01;
 constexpr uint8_t light_button = 0x02;
@@ -71,6 +70,7 @@ constexpr unsigned long defrost_cycle_length = 600000; // 10m
 
 constexpr unsigned long bin_full_delay = 10000;
 constexpr unsigned long bin_full_pause = 3600000;
+
 // Don't DDoS the front panel microprocessor
 constexpr unsigned long i2c_communication_delay = 50;
 
