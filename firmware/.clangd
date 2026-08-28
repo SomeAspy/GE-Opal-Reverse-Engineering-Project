@@ -1,0 +1,21 @@
+CompileFlags:
+  CompilationDatabase: firmware
+
+Diagnostics:
+  ClangTidy:
+    # Enable all core rules
+    Add:
+      - bugprone-*
+      - cert-*
+      - cppcoreguidelines-*
+      - modernize-*
+      - performance-*
+      - portability-*
+      - readability-*
+      - misc-*
+    Remove:
+      - cppcoreguidelines-avoid-non-const-global-variables # Stupid in the context of Arduino
+      - cppcoreguidelines-avoid-magic-numbers # See above
+      - readability-magic-numbers # See above
+      - readability-function-cognitive-complexity # no.
+      - readability-implicit-bool-conversion # Eh.

@@ -3,101 +3,17 @@
 // https://github.com/someaspy/GE-Opal-2-fixes
 
 #include "HardwareSerial.h"
-#include <Arduino.h>
+#include "constants.h"
 #include <EmonLib.h>
 #include <Wire.h>
+#include <avr/wdt.h>
 
-// Pins
-
-const int BinSwitchPin = 3;
-const int TankFullPin = 5;
-const int TankEmptyPin = 6;
-const int IrBlasterPin = 7;
-const int CompressorPin = 8;
-const int AugerPin = 9;
-const int FanPin = 10;
-const int UvLedPin = 11;
-const int PumpPin = 12;
-const int MotorAmmeterPin = A0;
-// Using analog because the voltage isn't enough to trigger digital high (~1.6v)
-const int IrReceiverPin = A1;
-
-// Front Panel
-const byte FrontPanel = 0x60;
-
-// Bitmasks sent to Front panel
-const byte CleanLed = 0x01;
-const byte LightLed = 0x02;
-const byte PowerLed = 0x04;
-const byte AddWaterLed = 0x08;
-const byte MakingIceLed = 0x10;
-const byte CleaningLed = 0x20;
-const byte DefrostingLed = 0x40;
-const byte WifiLed = 0x80;
-
-// Bitmasks from the front panl
-const byte ButtonReleased = 0x00;
-const byte CleanButton = 0x01;
-const byte LightButton = 0x02;
-const byte PowerButton = 0x03;
-const byte PowerButtonHold = 0x04;
-const byte LightButtonHold = 0x05;
-const byte CleanButtonHold = 0x06;
-
-// Timing & variables
-
-// Calibration factor by gemini, because I hate complex math
-const double AugerAmmeterCalibrationFactor = 5.76;
-// IRM sample count by Gemini, because I can't be bothered.
-const int AugerAmmeterSampleCount = 1480;
-
-const unsigned long pumpTimeout = 120000; // 2m - Filter can drop flow a lot
-const unsigned long compressorTimeout = 300000; // 5m
-
-// From testing the machine usually settles around 0.45A to 0.48A.
-// 0.05 means the compressor is off. This probably means we have a calibration
-// error.
-// Note currentDrawLimit is ignored when the compressor first starts to
-// accomodate inrush current. Tweak as needed.
-const float currentDrawLimit = 0.50;
-const unsigned long augerMotorGracePeriod = 15000; // 15s for inrush to settle
-const unsigned long defrostCycleLength = 600000;   // 10m
-
-const unsigned long binFullDelay = 10000;
-const unsigned long binFullCooldown = 3600000;
-// Don't DDoS the front panel microprocessor
-const unsigned long panelCommunicationDelay = 50;
-
+namespace {
 EnergyMonitor augerMeter;
-
-void setup() {
-  Serial.begin(115200);
-  Wire.begin();
-
-  // Grounded inputs need to be pulled up
-  pinMode(BinSwitchPin, INPUT_PULLUP);
-  pinMode(TankFullPin, INPUT_PULLUP);
-  pinMode(TankEmptyPin, INPUT_PULLUP);
-
-  // Standard inputs
-  pinMode(IrReceiverPin, INPUT);
-  pinMode(MotorAmmeterPin, INPUT);
-
-  // Outputs
-  pinMode(IrBlasterPin, OUTPUT);
-  pinMode(CompressorPin, OUTPUT);
-  pinMode(AugerPin, OUTPUT);
-  pinMode(FanPin, OUTPUT);
-  pinMode(UvLedPin, OUTPUT);
-  pinMode(PumpPin, OUTPUT);
-
-  augerMeter.current(MotorAmmeterPin, AugerAmmeterCalibrationFactor);
-};
 
 // Front panel communication
 unsigned long lastPanelCommunication = 0;
-byte lastButtonPress = 0x00;
-unsigned long errorBlink = 0;
+byte lastButtonPress = button::idle;
 
 // Water management
 bool pumping = false;
@@ -105,7 +21,7 @@ unsigned long pumpStartedTime = 0;
 
 // Compressor management
 // If the machine is off, assume its been off for a safe amount of time
-unsigned long compressorStopTime = 300001;
+unsigned long compressorStopTime = -compressor_cooldown;
 unsigned long compressorStartTime = 0;
 bool isCompressorRunning = false;
 
@@ -122,70 +38,101 @@ bool binFull = false;
 bool tankEmptyHalt = false;
 bool isPowered = false;
 bool isLightOn = false;
+} // namespace
+
+void setup() {
+  wdt_enable(WDTO_2S);
+  Serial.begin(115200);
+  Wire.begin();
+
+  // Grounded inputs need to be pulled up
+  pinMode(pin::bin_switch, INPUT_PULLUP);
+  pinMode(pin::tank_full, INPUT_PULLUP);
+  pinMode(pin::tank_empty, INPUT_PULLUP);
+
+  // Standard inputs
+  pinMode(pin::ir_receiver, INPUT);
+  pinMode(pin::auger_ammeter, INPUT);
+
+  // Outputs
+  pinMode(pin::ir_blaster, OUTPUT);
+  pinMode(pin::compressor, OUTPUT);
+  pinMode(pin::auger, OUTPUT);
+  pinMode(pin::fan, OUTPUT);
+  pinMode(pin::uv_led, OUTPUT);
+  pinMode(pin::pump, OUTPUT);
+
+  augerMeter.current(pin::auger_ammeter, ammeter_calibration_factor);
+}
 
 void loop() {
+  wdt_reset();
   // DIGITAL READS ARE INVERTED BECAUSE WE PULL UP!!!
   // Read values for the current cycle
-  const bool isTankFull = digitalRead(TankFullPin) == LOW;
-  const bool isTankEmpty = digitalRead(TankEmptyPin) == LOW;
-  const bool isBinInserted = digitalRead(BinSwitchPin) == LOW;
+  const bool isTankFull = digitalRead(pin::tank_full) == LOW;
+  const bool isTankEmpty = digitalRead(pin::tank_empty) == LOW;
+  const bool isBinInserted = digitalRead(pin::bin_switch) == LOW;
 
-  const double currentDraw = augerMeter.calcIrms(AugerAmmeterSampleCount);
+  const double currentDraw = augerMeter.calcIrms(irm_sample_count);
 
-  if (millis() - lastPanelCommunication > panelCommunicationDelay) {
+  if (millis() - lastPanelCommunication > i2c_communication_delay) {
     lastPanelCommunication = millis();
-    byte currentLights = 0x00;
+    byte currentLights = 0x0;
     if (isPowered) {
-      currentLights |= PowerLed;
+      currentLights |= led::power_button;
     }
     if (defrostCycle) {
-      currentLights |= DefrostingLed;
+      currentLights |= led::defrosting;
     }
     if (tankEmptyHalt) {
-      currentLights |= AddWaterLed;
+      currentLights |= led::add_water;
     }
     if (isLightOn) {
-      currentLights |= LightLed;
+      currentLights |= led::light_button;
     }
     if (isCompressorRunning) {
-      currentLights |= MakingIceLed;
+      currentLights |= led::making_ice;
     }
 
-    Wire.requestFrom(FrontPanel, (byte)1);
+    Wire.requestFrom(front_panel_i2c_address, (byte)1);
     if (Wire.available()) {
-      byte buttonCode = Wire.read();
+      byte buttonCode = (byte)Wire.read();
       if (buttonCode != lastButtonPress) {
-        if (buttonCode != ButtonReleased) {
+        if (buttonCode != button::idle) {
           switch (buttonCode) {
-          case PowerButton:
+          case button::power:
             isPowered = !isPowered;
+            tankEmptyHalt = false;
             break;
-          case LightButton:
+          case button::light:
             isLightOn = !isLightOn;
             break;
+          default:
+            Serial.print("missing case: ");
+            Serial.println(buttonCode);
           }
         }
         lastButtonPress = buttonCode;
       }
-      Wire.beginTransmission(FrontPanel);
+      Wire.beginTransmission(front_panel_i2c_address);
       Wire.write(currentLights);
       Wire.endTransmission();
     }
   }
 
-  bool IrReceiving = false;
+  bool irReceiving = false;
 
   // IR Receiver needs a moment to register it's state
-  digitalWrite(IrBlasterPin, HIGH);
+  digitalWrite(pin::ir_blaster, HIGH);
   delay(4);
-  const int IrVoltage = analogRead(IrReceiverPin);
-  if (IrVoltage >= 200) { // Around 1v
-    IrReceiving = true;
+  const int irVoltage = analogRead(pin::ir_receiver);
+  if (irVoltage >= ir_receiver_voltage_threshold) {
+    irReceiving = true;
   }
-  digitalWrite(IrBlasterPin, LOW);
+  digitalWrite(pin::ir_blaster, LOW);
 
   Serial.println(currentDraw);
-  if (IrReceiving == true) {
+  if (irReceiving) {
     Serial.println(millis());
     Serial.println("can see");
   }
@@ -193,11 +140,11 @@ void loop() {
   // When the machine should be stopped
   if (!isPowered || tankEmptyHalt || defrostCycle || binFull) {
     Serial.println("Halted");
-    digitalWrite(PumpPin, LOW);
-    digitalWrite(CompressorPin, LOW);
-    digitalWrite(FanPin, LOW);
-    digitalWrite(UvLedPin, LOW);
-    digitalWrite(AugerPin, LOW);
+    digitalWrite(pin::pump, LOW);
+    digitalWrite(pin::compressor, LOW);
+    digitalWrite(pin::fan, LOW);
+    digitalWrite(pin::uv_led, LOW);
+    digitalWrite(pin::auger, LOW);
     pumping = false;
 
     // Start compressor cooldown
@@ -213,21 +160,21 @@ void loop() {
       binCheck = 0;
     }
     // If the defrost cycle triggered the halt and is done, start the machine
-    if (millis() - defrostCycleStartTime > defrostCycleLength &&
-        defrostCycle == true) {
+    if (millis() - defrostCycleStartTime > defrost_cycle_length &&
+        defrostCycle) {
       defrostCycle = false;
     }
 
     // If the bin being filled triggered the halt, clear once ice making
     // cooldown finishes
-    if (millis() - binLastFullAt > binFullCooldown && binFull == true) {
+    if (millis() - binLastFullAt > bin_full_pause && binFull) {
       binFull = false;
     }
     return;
   }
 
   // If the pump doesn't move enough water into the tank, something is wrong
-  if (pumping && (millis() - pumpStartedTime > pumpTimeout)) {
+  if (pumping && (millis() - pumpStartedTime > pump_timeout)) {
     // We are probably out of water
     Serial.println("no water?");
     tankEmptyHalt = true;
@@ -237,31 +184,29 @@ void loop() {
   // Don't stop pumping once the lower float rises, so we can fill it up to the
   // upper float to save pump spam
   if (isTankEmpty && !pumping) {
-    digitalWrite(UvLedPin, HIGH);
-    digitalWrite(PumpPin, HIGH);
+    digitalWrite(pin::uv_led, HIGH);
+    digitalWrite(pin::pump, HIGH);
 
     pumping = true;
     pumpStartedTime = millis();
-  }
-
-  // Stop the pump when the upper float triggers
-  if (isTankFull && pumping) {
-    digitalWrite(UvLedPin, LOW);
-    digitalWrite(PumpPin, LOW);
+  } else if (isTankFull && pumping) {
+    // Stop the pump when the upper float triggers
+    digitalWrite(pin::uv_led, LOW);
+    digitalWrite(pin::pump, LOW);
     pumping = false;
   }
 
   // If IR LOS is broken, there is either ice actively falling or the bin is
   // full to rule out the first case, wait for the IR sensor to lose LOS for the
-  // delay specified in binFullDelay
-  if (IrReceiving == HIGH) {
+  // delay specified in bin_full_delay
+  if (irReceiving) {
     binCheck = 0;
   }
 
-  if (IrReceiving == LOW) {
+  if (!irReceiving) {
     if (binCheck == 0) {
       binCheck = millis();
-    } else if (millis() - binCheck > binFullDelay) {
+    } else if (millis() - binCheck > bin_full_delay) {
       binFull = true;
       binLastFullAt = millis();
       return;
@@ -270,16 +215,16 @@ void loop() {
 
   if (!isCompressorRunning) {
     // Don't abuse the compressor
-    if (millis() - compressorStopTime < compressorTimeout) {
+    if (millis() - compressorStopTime < compressor_cooldown) {
       return;
     }
     // Wait if we are in the middle of checking the bin
     if (binCheck != 0) {
       return;
     }
-    digitalWrite(CompressorPin, HIGH);
-    digitalWrite(FanPin, HIGH);
-    digitalWrite(AugerPin, HIGH);
+    digitalWrite(pin::compressor, HIGH);
+    digitalWrite(pin::fan, HIGH);
+    digitalWrite(pin::auger, HIGH);
     compressorStartTime = millis();
     isCompressorRunning = true;
   }
@@ -288,8 +233,8 @@ void loop() {
   // Notably, the original machine has a light for defrost cycle, but I've never
   // seen it trigger, nor do I see a method of monitoring the motor on the
   // original motherboard
-  if (currentDraw >= currentDrawLimit &&
-      millis() - compressorStartTime > augerMotorGracePeriod) {
+  if (currentDraw >= auger_current_draw_limit &&
+      millis() - compressorStartTime > auger_inrush_grace) {
     defrostCycle = true;
     defrostCycleStartTime = millis();
     return;
