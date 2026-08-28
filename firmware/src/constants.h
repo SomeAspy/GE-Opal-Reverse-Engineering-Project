@@ -1,3 +1,7 @@
+// Copyright (C) 2026 SomeAspy (Aiden B. amb@aspy.dev)
+// SPDX-License-Identifier: GPL-3.0-only
+// https://github.com/someaspy/GE-Opal-2-fixes
+
 #include <Arduino.h>
 // Pins
 
