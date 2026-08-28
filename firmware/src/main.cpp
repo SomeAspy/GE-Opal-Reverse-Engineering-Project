@@ -11,8 +11,6 @@
 namespace {
 EnergyMonitor augerMeter;
 
-bool isCleaning = false;
-
 // Front panel communication
 unsigned long lastPanelCommunication = 0;
 uint8_t lastButtonPress = button::idle;
@@ -40,6 +38,7 @@ bool binFull = false;
 bool tankEmptyHalt = false;
 bool isPowered = false;
 bool isLightOn = false;
+bool isCleaning = false;
 } // namespace
 
 void setup() {
