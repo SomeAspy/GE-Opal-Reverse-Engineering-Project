@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // https://github.com/someaspy/GE-Opal-2-fixes
 
-#include "HardwareSerial.h"
 #include "constants.h"
+#include <Arduino.h>
 #include <EmonLib.h>
 #include <Wire.h>
 #include <avr/wdt.h>
@@ -13,7 +13,7 @@ EnergyMonitor augerMeter;
 
 // Front panel communication
 unsigned long lastPanelCommunication = 0;
-byte lastButtonPress = button::idle;
+uint8_t lastButtonPress = button::idle;
 
 // Water management
 bool pumping = false;
@@ -61,6 +61,7 @@ void setup() {
   pinMode(pin::fan, OUTPUT);
   pinMode(pin::uv_led, OUTPUT);
   pinMode(pin::pump, OUTPUT);
+  pinMode(pin::bin_led, OUTPUT);
 
   augerMeter.current(pin::auger_ammeter, ammeter_calibration_factor);
 }
@@ -69,15 +70,15 @@ void loop() {
   wdt_reset();
   // DIGITAL READS ARE INVERTED BECAUSE WE PULL UP!!!
   // Read values for the current cycle
-  const bool isTankFull = digitalRead(pin::tank_full) == LOW;
-  const bool isTankEmpty = digitalRead(pin::tank_empty) == LOW;
-  const bool isBinInserted = digitalRead(pin::bin_switch) == LOW;
+  const bool isTankFull = !digitalRead(pin::tank_full);
+  const bool isTankEmpty = !digitalRead(pin::tank_empty);
+  const bool isBinInserted = !digitalRead(pin::bin_switch);
 
   const double currentDraw = augerMeter.calcIrms(irm_sample_count);
 
   if (millis() - lastPanelCommunication > i2c_communication_delay) {
     lastPanelCommunication = millis();
-    byte currentLights = 0x0;
+    uint8_t currentLights = 0x0;
     if (isPowered) {
       currentLights |= led::power_button;
     }
@@ -94,9 +95,9 @@ void loop() {
       currentLights |= led::making_ice;
     }
 
-    Wire.requestFrom(front_panel_i2c_address, (byte)1);
+    Wire.requestFrom(front_panel_i2c_address, static_cast<uint8_t>(1));
     if (Wire.available()) {
-      byte buttonCode = (byte)Wire.read();
+      auto buttonCode = static_cast<uint8_t>(Wire.read());
       if (buttonCode != lastButtonPress) {
         if (buttonCode != button::idle) {
           switch (buttonCode) {
@@ -106,6 +107,7 @@ void loop() {
             break;
           case button::light:
             isLightOn = !isLightOn;
+            digitalWrite(pin::bin_led, isLightOn);
             break;
           default:
             Serial.print("missing case: ");
@@ -123,13 +125,13 @@ void loop() {
   bool irReceiving = false;
 
   // IR Receiver needs a moment to register it's state
-  digitalWrite(pin::ir_blaster, HIGH);
+  digitalWrite(pin::ir_blaster, true);
   delay(4);
   const int irVoltage = analogRead(pin::ir_receiver);
   if (irVoltage >= ir_receiver_voltage_threshold) {
     irReceiving = true;
   }
-  digitalWrite(pin::ir_blaster, LOW);
+  digitalWrite(pin::ir_blaster, false);
 
   Serial.println(currentDraw);
   if (irReceiving) {
@@ -140,11 +142,11 @@ void loop() {
   // When the machine should be stopped
   if (!isPowered || tankEmptyHalt || defrostCycle || binFull) {
     Serial.println("Halted");
-    digitalWrite(pin::pump, LOW);
-    digitalWrite(pin::compressor, LOW);
-    digitalWrite(pin::fan, LOW);
-    digitalWrite(pin::uv_led, LOW);
-    digitalWrite(pin::auger, LOW);
+    digitalWrite(pin::pump, false);
+    digitalWrite(pin::compressor, false);
+    digitalWrite(pin::fan, false);
+    digitalWrite(pin::uv_led, false);
+    digitalWrite(pin::auger, false);
     pumping = false;
 
     // Start compressor cooldown
@@ -184,15 +186,15 @@ void loop() {
   // Don't stop pumping once the lower float rises, so we can fill it up to the
   // upper float to save pump spam
   if (isTankEmpty && !pumping) {
-    digitalWrite(pin::uv_led, HIGH);
-    digitalWrite(pin::pump, HIGH);
+    digitalWrite(pin::uv_led, true);
+    digitalWrite(pin::pump, true);
 
     pumping = true;
     pumpStartedTime = millis();
   } else if (isTankFull && pumping) {
     // Stop the pump when the upper float triggers
-    digitalWrite(pin::uv_led, LOW);
-    digitalWrite(pin::pump, LOW);
+    digitalWrite(pin::uv_led, false);
+    digitalWrite(pin::pump, false);
     pumping = false;
   }
 
@@ -222,9 +224,9 @@ void loop() {
     if (binCheck != 0) {
       return;
     }
-    digitalWrite(pin::compressor, HIGH);
-    digitalWrite(pin::fan, HIGH);
-    digitalWrite(pin::auger, HIGH);
+    digitalWrite(pin::compressor, true);
+    digitalWrite(pin::fan, true);
+    digitalWrite(pin::auger, true);
     compressorStartTime = millis();
     isCompressorRunning = true;
   }
