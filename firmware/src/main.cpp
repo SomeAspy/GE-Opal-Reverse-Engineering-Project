@@ -3,7 +3,6 @@
 // https://github.com/someaspy/GE-Opal-2-fixes
 
 #include "constants.h"
-#include <Arduino.h>
 #include <EmonLib.h>
 #include <Wire.h>
 #include <avr/wdt.h>
