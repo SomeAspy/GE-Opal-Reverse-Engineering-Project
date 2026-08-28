@@ -41,7 +41,6 @@ bool isLightOn = false;
 
 void setup() {
   wdt_enable(WDTO_2S);
-  Serial.begin(115200);
   Wire.begin();
 
   // Grounded inputs need to be pulled up
@@ -108,9 +107,7 @@ void loop() {
             isLightOn = !isLightOn;
             digitalWrite(pin::bin_led, isLightOn);
             break;
-          default:
-            Serial.print("missing case: ");
-            Serial.println(buttonCode);
+          default:;
           }
         }
         lastButtonPress = buttonCode;
@@ -132,15 +129,8 @@ void loop() {
   }
   digitalWrite(pin::ir_blaster, false);
 
-  Serial.println(currentDraw);
-  if (irReceiving) {
-    Serial.println(millis());
-    Serial.println("can see");
-  }
-
   // When the machine should be stopped
   if (!isPowered || tankEmptyHalt || defrostCycle || binFull) {
-    Serial.println("Halted");
     digitalWrite(pin::pump, false);
     digitalWrite(pin::compressor, false);
     digitalWrite(pin::fan, false);
@@ -177,7 +167,6 @@ void loop() {
   // If the pump doesn't move enough water into the tank, something is wrong
   if (pumping && (millis() - pumpStartedTime > pump_timeout)) {
     // We are probably out of water
-    Serial.println("no water?");
     tankEmptyHalt = true;
     return;
   }
