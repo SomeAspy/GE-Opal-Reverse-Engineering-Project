@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // https://github.com/someaspy/GE-Opal-2-fixes
 
-#include "Arduino.h"
 #include "constants.h"
 #include <EmonLib.h>
 #include <Wire.h>
@@ -42,6 +41,7 @@ bool isCleaning = false;
 } // namespace
 
 void setup() {
+  Serial.begin(115200);
   wdt_enable(WDTO_2S);
   Wire.begin();
 
@@ -75,6 +75,9 @@ void loop() {
   const bool isBinInserted = !digitalRead(pin::bin_switch);
 
   const double currentDraw = augerMeter.calcIrms(irm_sample_count);
+  Serial.print(millis());
+  Serial.print(" ");
+  Serial.println(currentDraw);
 
   if (millis() - lastPanelCommunication > i2c_communication_delay) {
     lastPanelCommunication = millis();
@@ -129,19 +132,9 @@ void loop() {
     }
   }
 
-  bool irReceiving = false;
-
-  // IR Receiver needs a moment to register it's state
-  digitalWrite(pin::ir_blaster, true);
-  delay(4);
-  const int irVoltage = analogRead(pin::ir_receiver);
-  if (irVoltage >= ir_receiver_voltage_threshold) {
-    irReceiving = true;
-  }
-  digitalWrite(pin::ir_blaster, false);
-
   // When the machine should be stopped
   if (!isPowered || tankEmptyHalt || defrostCycle || binFull || isCleaning) {
+    Serial.println("Machine Stopped");
     if (!isCleaning) {
       digitalWrite(pin::pump, false);
       digitalWrite(pin::uv_led, false);
@@ -179,6 +172,13 @@ void loop() {
     }
     return;
   }
+
+  // IR Receiver needs a moment to register it's state
+  digitalWrite(pin::ir_blaster, true);
+  delay(10);
+  const bool irReceiving = digitalRead(pin::ir_receiver);
+  Serial.println(irReceiving);
+  digitalWrite(pin::ir_blaster, false);
 
   // If the pump doesn't move enough water into the tank, something is wrong
   if (pumping && (millis() - pumpStartedTime > pump_timeout)) {

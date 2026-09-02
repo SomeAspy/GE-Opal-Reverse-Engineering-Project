@@ -6,6 +6,7 @@
 #include <Arduino.h>
 
 namespace pin {
+constexpr uint8_t ir_receiver = 2;
 constexpr uint8_t bin_switch = 3;
 constexpr uint8_t bin_led = 4;
 constexpr uint8_t tank_full = 5;
@@ -17,8 +18,6 @@ constexpr uint8_t fan = 10;
 constexpr uint8_t uv_led = 11;
 constexpr uint8_t pump = 12;
 constexpr uint8_t auger_ammeter = A0;
-// Using analog because the voltage isn't enough to trigger digital high (~1.6v)
-constexpr uint8_t ir_receiver = A1;
 } // namespace pin
 
 // Front Panel
@@ -64,7 +63,7 @@ constexpr unsigned long compressor_cooldown = 300000; // 5m
 // error.
 // Note currentDrawLimit is ignored when the compressor first starts to
 // accomodate inrush current. Tweak as needed.
-constexpr float auger_current_draw_limit = 0.50;
+constexpr float auger_current_draw_limit = 0.55;
 constexpr unsigned long auger_inrush_grace = 15000; // 15s for inrush to settle
 constexpr unsigned long defrost_cycle_length = 600000; // 10m
 
@@ -73,6 +72,3 @@ constexpr unsigned long bin_full_pause = 3600000;
 
 // Don't DDoS the front panel microprocessor
 constexpr unsigned long i2c_communication_delay = 50;
-
-// 200 ~= 1v. Needed because digital high requires near 5v
-constexpr int ir_receiver_voltage_threshold = 200;
