@@ -50,6 +50,6 @@ I popped the microcontroller on my original front panel that also had `Descale` 
 Light codes are sent as bitmask. If you want to turn on multiple LEDs then you add the bits.
 For example:
 
-`0x01 |= 0x80` = Clean + WiFi Symbol
+`0x01 | 0x80` = Clean + WiFi Symbol
 
-`0x02 |= 0x04 |= 0x20` = Light + Power + Cleaning
+`0x02 | 0x04 | 0x20` = Light + Power + Cleaning
