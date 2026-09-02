@@ -4128,16 +4128,6 @@
 		)
 		(uuid "42a5f0a3-edd9-4da0-9bce-f692c5c72358")
 	)
-	(text "When active, will hit about 1.6v"
-		(exclude_from_sim no)
-		(at 149.606 149.098 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "6c0e8c80-ff3d-489d-981e-935b1591d8bc")
-	)
 	(text "Be careful how you source 12V here!!!\nSay, using a buck converter your\n5V powersource will backfeed from\nthe arduino when the machine is unplugged\nyou will probably get Welder's Flash\nfrom the light if you try to inspect it\n(ask me how I know)"
 		(exclude_from_sim no)
 		(at 258.826 100.076 0)
@@ -4147,6 +4137,12 @@
 			)
 		)
 		(uuid "87c06407-fc7a-4758-8578-b2f9a41a1d82")
+	)
+	(junction
+		(at 144.78 160.02)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "13ea6b0f-1e33-4d2d-a48c-e8d76e4b4a58")
 	)
 	(junction
 		(at 209.55 62.23)
@@ -4161,6 +4157,12 @@
 		(uuid "3c8536ff-c6b6-48f4-b934-e07e7c380202")
 	)
 	(junction
+		(at 91.44 102.87)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5d7b4bf3-a27b-41af-a186-9bbc01c7bb31")
+	)
+	(junction
 		(at 96.52 102.87)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4173,22 +4175,10 @@
 		(uuid "7d5309f2-fddd-49e6-8091-489974c9c9ac")
 	)
 	(junction
-		(at 144.78 160.02)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "b652b449-cf50-409a-88ba-6a6988469bde")
-	)
-	(junction
 		(at 91.44 82.55)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d72cce61-a829-447f-af06-5f0356efacf3")
-	)
-	(junction
-		(at 91.44 102.87)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "e1c84e63-e6ef-46b3-b7ab-61e858df90c0")
 	)
 	(junction
 		(at 209.55 74.93)
@@ -4268,16 +4258,6 @@
 	)
 	(wire
 		(pts
-			(xy 95.25 119.38) (xy 109.22 119.38)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0e01486f-07c7-470c-9b96-dfdc88b98f52")
-	)
-	(wire
-		(pts
 			(xy 172.72 93.98) (xy 157.48 93.98)
 		)
 		(stroke
@@ -4285,6 +4265,16 @@
 			(type default)
 		)
 		(uuid "14dc127e-37fd-4fd3-976e-77ce7da664b7")
+	)
+	(wire
+		(pts
+			(xy 144.78 160.02) (xy 144.78 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "15e8ff68-8e81-43a8-ab1b-2d60211773e6")
 	)
 	(wire
 		(pts
@@ -4298,16 +4288,6 @@
 	)
 	(wire
 		(pts
-			(xy 91.44 102.87) (xy 91.44 113.03)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "25cf0a00-04f6-4721-9a6a-b85f15fc1dc2")
-	)
-	(wire
-		(pts
 			(xy 184.15 130.81) (xy 127 130.81)
 		)
 		(stroke
@@ -4318,13 +4298,23 @@
 	)
 	(wire
 		(pts
-			(xy 144.78 160.02) (xy 170.18 160.02)
+			(xy 91.44 119.38) (xy 91.44 102.87)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "3974f1d2-a54d-425c-8e38-8484580db0fe")
+		(uuid "35fa17e9-df7e-41c0-85ed-6a665270af67")
+	)
+	(wire
+		(pts
+			(xy 81.28 119.38) (xy 91.44 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "37fe31a8-1bc2-4e9f-8421-3d6f0e72bdfc")
 	)
 	(wire
 		(pts
@@ -4398,16 +4388,6 @@
 	)
 	(wire
 		(pts
-			(xy 170.18 96.52) (xy 157.48 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4498ae26-1054-40bb-bd31-bba528d7abe9")
-	)
-	(wire
-		(pts
 			(xy 115.57 82.55) (xy 115.57 86.36)
 		)
 		(stroke
@@ -4448,16 +4428,6 @@
 	)
 	(wire
 		(pts
-			(xy 109.22 96.52) (xy 132.08 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5175b21d-70f4-4bc7-bcf8-c04bbd6b56d1")
-	)
-	(wire
-		(pts
 			(xy 209.55 116.84) (xy 212.09 116.84)
 		)
 		(stroke
@@ -4475,6 +4445,26 @@
 			(type default)
 		)
 		(uuid "533fd748-c58b-41b0-8204-8893d1a48bf9")
+	)
+	(wire
+		(pts
+			(xy 109.22 127) (xy 109.22 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d410311-3e51-4356-8734-c523b34fbed7")
+	)
+	(wire
+		(pts
+			(xy 76.2 127) (xy 109.22 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "60dc4f87-83d0-442c-b493-30bab397dbfc")
 	)
 	(wire
 		(pts
@@ -4525,6 +4515,16 @@
 			(type default)
 		)
 		(uuid "6cf8078d-5112-4753-a537-365d7275a4ee")
+	)
+	(wire
+		(pts
+			(xy 132.08 124.46) (xy 132.08 111.76)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6ff327fa-1bf0-4ed5-9c56-6dc5dbc9bd0e")
 	)
 	(wire
 		(pts
@@ -4608,6 +4608,16 @@
 	)
 	(wire
 		(pts
+			(xy 109.22 96.52) (xy 132.08 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8d11e4da-b1f8-404a-a3ce-e10024dbb2f2")
+	)
+	(wire
+		(pts
 			(xy 62.23 175.26) (xy 62.23 182.88)
 		)
 		(stroke
@@ -4638,7 +4648,7 @@
 	)
 	(wire
 		(pts
-			(xy 80.01 113.03) (xy 80.01 119.38)
+			(xy 55.88 113.03) (xy 55.88 119.38)
 		)
 		(stroke
 			(width 0)
@@ -4758,26 +4768,6 @@
 	)
 	(wire
 		(pts
-			(xy 80.01 113.03) (xy 91.44 113.03)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b2f515dd-a82e-4f80-99fa-ea65796b99d5")
-	)
-	(wire
-		(pts
-			(xy 109.22 119.38) (xy 109.22 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b4fe9952-01f8-4203-9333-41a49d2ab26c")
-	)
-	(wire
-		(pts
 			(xy 227.33 124.46) (xy 212.09 124.46)
 		)
 		(stroke
@@ -4785,16 +4775,6 @@
 			(type default)
 		)
 		(uuid "b5c9fa60-aa96-406f-b156-d5aceeffea6e")
-	)
-	(wire
-		(pts
-			(xy 170.18 160.02) (xy 170.18 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b614d9ad-ba83-4f92-97d3-075cb6ce63cf")
 	)
 	(wire
 		(pts
@@ -4835,6 +4815,16 @@
 			(type default)
 		)
 		(uuid "c7a439b0-0836-4cc4-9cfb-237f1b3217f7")
+	)
+	(wire
+		(pts
+			(xy 144.78 124.46) (xy 132.08 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cc0aa708-e94c-4dae-8b2f-f48708223d81")
 	)
 	(wire
 		(pts
@@ -5817,7 +5807,7 @@
 				)
 			)
 		)
-		(property "Value" "100Ω"
+		(property "Value" "1kΩ"
 			(at 78.74 72.644 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5898,7 +5888,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1MΩ"
+		(property "Value" "10kΩ"
 			(at 147.32 165.0999 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6030,6 +6020,84 @@
 			(project "rough-schematic-sketch"
 				(path "/3caecd39-8377-4639-951b-eef5198ca2fc"
 					(reference "#PWR03")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+5V")
+		(at 55.88 113.03 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2e9e0451-99a7-4d20-9095-35c43ae5a482")
+		(property "Reference" "#PWR022"
+			(at 55.88 116.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+5V"
+			(at 55.88 107.95 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 55.88 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 55.88 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 55.88 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "4db4d31b-7c4f-4e13-a1f9-36274c8f48d0")
+		)
+		(instances
+			(project "rough-schematic-sketch"
+				(path "/3caecd39-8377-4639-951b-eef5198ca2fc"
+					(reference "#PWR022")
 					(unit 1)
 				)
 			)
@@ -6272,6 +6340,89 @@
 		)
 	)
 	(symbol
+		(lib_id "Transistor_FET:Q_NMOS_GDS")
+		(at 76.2 121.92 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "37de120a-603c-49c6-96c1-537da5d57c1c")
+		(property "Reference" "Q5"
+			(at 76.2 113.03 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "IR LED Mosfet"
+			(at 76.2 115.57 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 73.66 116.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 76.2 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "N-MOSFET transistor, gate/drain/source"
+			(at 76.2 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "91059da2-bb90-4433-84a6-c90ef12e163d")
+		)
+		(pin "3"
+			(uuid "16aa0e91-9a36-4681-a5d9-1b129bf2ac82")
+		)
+		(pin "2"
+			(uuid "e0062c79-1112-4ffb-8ecc-06c6ea6f9041")
+		)
+		(instances
+			(project "rough-schematic-sketch"
+				(path "/3caecd39-8377-4639-951b-eef5198ca2fc"
+					(reference "Q5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector_Generic:Conn_01x04")
 		(at 204.47 34.29 0)
 		(unit 1)
@@ -6354,85 +6505,6 @@
 			(project "rough-schematic-sketch"
 				(path "/3caecd39-8377-4639-951b-eef5198ca2fc"
 					(reference "J1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+5V")
-		(at 74.93 74.93 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "420ab9bd-6f7b-4f0c-aafb-b5966caee8b3")
-		(property "Reference" "#PWR021"
-			(at 78.74 74.93 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "+5V"
-			(at 71.12 74.9299 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 74.93 74.93 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 74.93 74.93 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 74.93 74.93 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5fb462b6-d957-4f06-8d33-3ea3c725740c")
-		)
-		(instances
-			(project "rough-schematic-sketch"
-				(path "/3caecd39-8377-4639-951b-eef5198ca2fc"
-					(reference "#PWR021")
 					(unit 1)
 				)
 			)
@@ -6840,6 +6912,85 @@
 			(project "rough-schematic-sketch"
 				(path "/3caecd39-8377-4639-951b-eef5198ca2fc"
 					(reference "#PWR09")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_US")
+		(at 59.69 119.38 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "9491de63-0f76-4035-9ac3-19cf3ca9b8da")
+		(property "Reference" "R2"
+			(at 59.69 115.316 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "68Ω"
+			(at 59.436 117.348 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 59.944 118.364 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 59.69 119.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor, US symbol"
+			(at 59.69 119.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "793b8191-b58f-491c-84b9-70323e03dcc3")
+		)
+		(pin "1"
+			(uuid "1c160a31-c7ad-4ba3-aa9d-299a4156f2e8")
+		)
+		(instances
+			(project "rough-schematic-sketch"
+				(path "/3caecd39-8377-4639-951b-eef5198ca2fc"
+					(reference "R2")
 					(unit 1)
 				)
 			)
@@ -7337,6 +7488,85 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+12V")
+		(at 74.93 74.93 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a9d72555-9a6b-47d0-813d-30046006b07b")
+		(property "Reference" "#PWR021"
+			(at 78.74 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+12V"
+			(at 71.12 74.9299 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 74.93 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 74.93 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+12V\""
+			(at 74.93 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b055d96e-e0a8-4188-945d-a29e2561a3f8")
+		)
+		(instances
+			(project "rough-schematic-sketch"
+				(path "/3caecd39-8377-4639-951b-eef5198ca2fc"
+					(reference "#PWR021")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 209.55 106.68 0)
 		(unit 1)
@@ -7574,6 +7804,96 @@
 			(project "rough-schematic-sketch"
 				(path "/3caecd39-8377-4639-951b-eef5198ca2fc"
 					(reference "Q1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:LED")
+		(at 67.31 119.38 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "c51151c8-e108-4d61-89a8-155dbe901026")
+		(property "Reference" "D2"
+			(at 67.31 123.19 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "IR LED"
+			(at 67.31 121.666 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 67.31 119.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 67.31 119.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Light emitting diode"
+			(at 67.31 119.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" "1=K 2=A"
+			(at 67.31 119.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "5b101bff-96a8-4209-aea4-637a000053d8")
+		)
+		(pin "2"
+			(uuid "80862d44-aec4-4c18-959a-c6b7ca58f7b8")
+		)
+		(instances
+			(project "rough-schematic-sketch"
+				(path "/3caecd39-8377-4639-951b-eef5198ca2fc"
+					(reference "D2")
 					(unit 1)
 				)
 			)
@@ -8495,96 +8815,6 @@
 	)
 	(symbol
 		(lib_id "Device:LED")
-		(at 83.82 119.38 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "fa93d7dc-4906-4e5d-9329-d4126cc63ee5")
-		(property "Reference" "D2"
-			(at 83.82 115.57 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "IR LED"
-			(at 83.82 117.094 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 83.82 119.38 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 83.82 119.38 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode"
-			(at 83.82 119.38 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 83.82 119.38 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5b5b4356-6a07-42ff-8c6c-96031f148baf")
-		)
-		(pin "2"
-			(uuid "1f41356d-e013-4a3d-9e62-04ca7f5d121b")
-		)
-		(instances
-			(project "rough-schematic-sketch"
-				(path "/3caecd39-8377-4639-951b-eef5198ca2fc"
-					(reference "D2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:LED")
 		(at 104.14 74.93 270)
 		(unit 1)
 		(body_style 1)
@@ -8671,85 +8901,6 @@
 			(project "rough-schematic-sketch"
 				(path "/3caecd39-8377-4639-951b-eef5198ca2fc"
 					(reference "D1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_US")
-		(at 91.44 119.38 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "fd8be2c1-470d-451f-b331-c209f97b313e")
-		(property "Reference" "R2"
-			(at 91.44 115.316 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "220Ω"
-			(at 91.186 117.348 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 91.694 118.364 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 91.44 119.38 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor, US symbol"
-			(at 91.44 119.38 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "e41328ec-63bf-452c-b4d7-347623133258")
-		)
-		(pin "1"
-			(uuid "4996163b-1144-45c8-abca-6607a3956707")
-		)
-		(instances
-			(project "rough-schematic-sketch"
-				(path "/3caecd39-8377-4639-951b-eef5198ca2fc"
-					(reference "R2")
 					(unit 1)
 				)
 			)

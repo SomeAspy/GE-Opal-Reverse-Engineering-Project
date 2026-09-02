@@ -94,18 +94,18 @@ More importantly, several members of the community have taken attempts to repair
 
 | Part                    | Connector Type          | Voltage  |
 | ----------------------- | ----------------------- | -------- |
-| UV Light                | JST XH 2-pin connector  | 12V DC   |
+| UV Light                | JST XA 2-pin connector  | 12V DC   |
 | Compressor              | JST VHR 3-pin connector | 120V AC  |
 | Auger Motor             | JST VHR 3-pin connector | 120V AC  |
-| Pump                    | JST XH 2-pin connector  | 12V DC   |
-| Fan                     | JST XH 2-pin connector  | 12V DC   |
-| WiFi Board              | TBD (5 pins)            | TBD      |
-| Front Panel             | TBD (4 pins)            | 5V + I2C |
-| Ice Box LED             | JST XH 2-pin connector  | 5V DC    |
-| Ice box presence switch | JST XH 2-pin connector  | 5V DC    |
-| Internal Tank Floats    | JST XH 4-pin connector  | 5V DC    |
-| IR LED For Capacity     | JST XH 2-pin connector  | 5V DC    |
-| IR Receiver             | JST XH 2-pin connector  | 5V DC    |
+| Pump                    | JST XA 2-pin connector  | 12V DC   |
+| Fan                     | JST XA 2-pin connector  | 12V DC   |
+| WiFi Board              | JST XA 5-pin connector  | TBD      |
+| Front Panel             | JST XA 4-pin connector  | 5V + I2C |
+| Ice Box LED             | JST XA 2-pin connector  | 12V DC   |
+| Ice box presence switch | JST XA 2-pin connector  | 5V DC    |
+| Internal Tank Floats    | JST XA 4-pin connector  | 5V DC    |
+| IR LED For Capacity     | JST XA 2-pin connector  | 5V DC    |
+| IR Receiver             | JST XA 2-pin connector  | 5V DC    |
 | AC Input                | JST VHR 3-pin connector | 120V AC  |
 
 - I2C protocols documented in [`i2c.md`](./reverse-engineering-efforts/i2c.md)
