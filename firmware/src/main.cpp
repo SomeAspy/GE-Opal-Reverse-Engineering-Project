@@ -73,13 +73,13 @@ void setup() {
   augerMeter.current(pin::auger_ammeter, ammeter_calibration_factor);
 
   if (EEPROM.read(store::enableBuzzer) == 255) {
-    EEPROM.write(store::enableBuzzer, false);
+    EEPROM.update(store::enableBuzzer, false);
   }
   if (EEPROM.read(store::enableBinLed) == 255) {
-    EEPROM.write(store::enableBinLed, true);
+    EEPROM.update(store::enableBinLed, true);
   }
   if (EEPROM.read(store::enableWifi) == 255) {
-    EEPROM.write(store::enableWifi, false);
+    EEPROM.update(store::enableWifi, false);
   }
   enableBuzzer = EEPROM.read(store::enableBuzzer);
   enableBinLed = EEPROM.read(store::enableBinLed);
@@ -114,7 +114,7 @@ void loop() {
         switch (buttonCode) {
         case button::power_light:
           enableWifi = !enableWifi;
-          EEPROM.write(store::enableWifi, store::enableWifi);
+          EEPROM.update(store::enableWifi, store::enableWifi);
           break;
         case button::power:
           isPowered = !isPowered;
@@ -122,12 +122,12 @@ void loop() {
           break;
         case button::light:
           isLightOn = !isLightOn;
-          EEPROM.write(store::enableBinLed, isLightOn);
+          EEPROM.update(store::enableBinLed, isLightOn);
           digitalWrite(pin::bin_led, isLightOn);
           break;
         case button::light_held:
           enableBuzzer = !enableBuzzer;
-          EEPROM.write(store::enableBuzzer, store::enableBuzzer);
+          EEPROM.update(store::enableBuzzer, store::enableBuzzer);
           break;
         case button::clean_held:
           isCleaning = true;
