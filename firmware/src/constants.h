@@ -84,7 +84,7 @@ constexpr unsigned long auger_inrush_grace = 15000; // 15s for inrush to settle
 constexpr unsigned long defrost_cycle_length = 600000; // 10m
 
 constexpr unsigned long bin_full_delay = 10000;
-constexpr unsigned long bin_full_pause = 3600000;
+constexpr unsigned long bin_full_pause = 7200000;
 
 // Don't DDoS the front panel microprocessor
 constexpr unsigned long i2c_communication_delay = 50;
