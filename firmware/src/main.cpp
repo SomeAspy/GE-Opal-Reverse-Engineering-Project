@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // https://github.com/someaspy/GE-Opal-2-fixes
 
+#include "Arduino.h"
 #include "constants.h"
+#include <EEPROM.h>
 #include <EmonLib.h>
 #include <Wire.h>
 #include <avr/wdt.h>
@@ -38,6 +40,10 @@ bool tankEmptyHalt = false;
 bool isPowered = false;
 bool isLightOn = false;
 bool isCleaning = false;
+
+// Initialized later by EEPROM
+bool enableBuzzer, enableBinLed, enableWifi;
+
 } // namespace
 
 void setup() {
@@ -62,8 +68,22 @@ void setup() {
   pinMode(pin::uv_led, OUTPUT);
   pinMode(pin::pump, OUTPUT);
   pinMode(pin::bin_led, OUTPUT);
+  pinMode(pin::buzzer, OUTPUT);
 
   augerMeter.current(pin::auger_ammeter, ammeter_calibration_factor);
+
+  if (EEPROM.read(store::enableBuzzer) == 255) {
+    EEPROM.write(store::enableBuzzer, false);
+  }
+  if (EEPROM.read(store::enableBinLed) == 255) {
+    EEPROM.write(store::enableBinLed, true);
+  }
+  if (EEPROM.read(store::enableWifi) == 255) {
+    EEPROM.write(store::enableWifi, false);
+  }
+  enableBuzzer = EEPROM.read(store::enableBuzzer);
+  enableBinLed = EEPROM.read(store::enableBinLed);
+  enableWifi = EEPROM.read(store::enableWifi);
 }
 
 void loop() {
@@ -73,6 +93,11 @@ void loop() {
   const bool isTankFull = !digitalRead(pin::tank_full);
   const bool isTankEmpty = !digitalRead(pin::tank_empty);
   const bool isBinInserted = !digitalRead(pin::bin_switch);
+
+  Serial.print("TankFull");
+  Serial.println(isTankFull);
+  Serial.print("TankEmpty");
+  Serial.println(isTankEmpty);
 
   const double currentDraw = augerMeter.calcIrms(irm_sample_count);
   Serial.print(millis());
@@ -86,24 +111,42 @@ void loop() {
     if (Wire.available()) {
       auto buttonCode = static_cast<uint8_t>(Wire.read());
       if (buttonCode != lastButtonPress) {
-        if (buttonCode != button::idle) {
-          switch (buttonCode) {
-          case button::power:
-            isPowered = !isPowered;
-            tankEmptyHalt = false;
-            break;
-          case button::light:
-            isLightOn = !isLightOn;
-            digitalWrite(pin::bin_led, isLightOn);
-            break;
-          case button::clean_held:
-            isCleaning = true;
-            break;
-          case button::clean:
-            isCleaning = false;
-            break;
-          default:;
+        switch (buttonCode) {
+        case button::power_light:
+          enableWifi = !enableWifi;
+          EEPROM.write(store::enableWifi, store::enableWifi);
+          break;
+        case button::power:
+          isPowered = !isPowered;
+          tankEmptyHalt = false;
+          break;
+        case button::light:
+          isLightOn = !isLightOn;
+          EEPROM.write(store::enableBinLed, isLightOn);
+          digitalWrite(pin::bin_led, isLightOn);
+          break;
+        case button::light_held:
+          enableBuzzer = !enableBuzzer;
+          EEPROM.write(store::enableBuzzer, store::enableBuzzer);
+          break;
+        case button::clean_held:
+          isCleaning = true;
+          break;
+        case button::clean:
+          isCleaning = false;
+          break;
+        case button::power_held:
+          // Tone regardless of buzzer setting, to confirm hard reset.
+          tone(pin::buzzer, 1700, 15);
+          wdt_enable(WDTO_15MS);
+          delay(10000);
+          break;
+        case button::idle:
+          if (enableBuzzer) {
+            tone(pin::buzzer, 500, 50);
           }
+          break;
+        default:;
         }
         lastButtonPress = buttonCode;
       }
@@ -125,6 +168,9 @@ void loop() {
       }
       if (isCleaning) {
         currentLights |= led::cleaning | led::clean_button;
+      }
+      if (enableWifi) {
+        currentLights |= led::wifi;
       }
       Wire.beginTransmission(front_panel_i2c_address);
       Wire.write(currentLights);
@@ -195,7 +241,8 @@ void loop() {
 
     pumping = true;
     pumpStartedTime = millis();
-  } else if (isTankFull && pumping) {
+  }
+  if (isTankFull && pumping) {
     // Stop the pump when the upper float triggers
     digitalWrite(pin::uv_led, false);
     digitalWrite(pin::pump, false);

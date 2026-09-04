@@ -21,6 +21,24 @@ Important context to a lot of frustration here: This is a $500 dollar ice machin
     - [`SchematicExport.pdf`](./custom-pcb/prototype/SchematicExport.pdf) - A human readable version of the schematic, made by printing to PDF from KiCAD
 - [`attribution.md`](./attribution.md) - Links and references used for files
 
+## Default button mappings
+
+A few new button actions are defined, and a few changed from the original machine behavior
+
+- **Power**: Toggles Power
+  - **When held**: Triggers a hard reset of the Arduino. _I hope you know what you're doing_
+- **Light**: Toggles Light
+  - **When held**: Toggles the beeper. The beeper is used to audibly communicate the status of the machine.
+- **Clean**: Toggles cleaning mode. In my implentation, there is no timer or anything. It simply forces the pump to run until it is pressed again.
+- **Power + Light**: Toggles the machine's WiFi daughterboard. Physically disconnects power from the board.
+
+**The light, WiFi, and beeper setting is stored in the Arduino's EEPROM.**
+
+[The Arduino's EEPROM has a limited lifespan of 100,000 writes.](https://en.wikipedia.org/wiki/EEPROM#:~:text=An%20EEPROM%20has%20a%20limited%20life%20for%20erasing%20and%20reprogramming) So don't go spamming it. As long as you don't press it 100 times a day (which still comes out to about 3 years of use), it should outlast the machine itself.
+
+_Fun fact: EEPROM (and all flash storage) utilize Quantum Tunneling to store data.
+Isn't that cool?_
+
 ## The Prototype
 
 ![Mess of wires and stuff coming from the ice machine](./images/ThePrototype.jpg)
@@ -92,21 +110,28 @@ More importantly, several members of the community have taken attempts to repair
 
 # Nominal voltages recorded from the opal 2 ice maker during operation
 
-| Part                    | Connector Type          | Voltage  |
-| ----------------------- | ----------------------- | -------- |
-| UV Light                | JST XA 2-pin connector  | 12V DC   |
-| Compressor              | JST VHR 3-pin connector | 120V AC  |
-| Auger Motor             | JST VHR 3-pin connector | 120V AC  |
-| Pump                    | JST XA 2-pin connector  | 12V DC   |
-| Fan                     | JST XA 2-pin connector  | 12V DC   |
-| WiFi Board              | JST XA 5-pin connector  | TBD      |
-| Front Panel             | JST XA 4-pin connector  | 5V + I2C |
-| Ice Box LED             | JST XA 2-pin connector  | 12V DC   |
-| Ice box presence switch | JST XA 2-pin connector  | 5V DC    |
-| Internal Tank Floats    | JST XA 4-pin connector  | 5V DC    |
-| IR LED For Capacity     | JST XA 2-pin connector  | 5V DC    |
-| IR Receiver             | JST XA 2-pin connector  | 5V DC    |
-| AC Input                | JST VHR 3-pin connector | 120V AC  |
+| PCB Label     | Part                    | Connector Type & Color          | Voltage  |
+| ------------- | ----------------------- | ------------------------------- | -------- |
+| UV            | UV Light                | JST XA 2-pin connector (Blue)   | 12V DC   |
+| compressor    | Compressor              | JST VHR 3-pin connector (Red)   | 120V AC  |
+| motor         | Auger Motor             | JST VHR 3-pin connector (White) | 120V AC  |
+| WP            | Pump                    | JST XA 2-pin connector (Purple) | 12V DC   |
+| FAN1          | Fan                     | JST XA 2-pin connector (Gray)   | 12V DC   |
+| WIFI          | WiFi Board              | JST XA 5-pin connector (White)  | ???      |
+| IM1101        | Front Panel             | JST XA 4-pin connector (Black)  | 5V + I2C |
+| LED11 & LED12 | Ice Box LED(s?)         | JST XA 2-pin connector          | 12V DC   |
+| A             | Ice box presence switch | JST XA 2-pin connector          | 5V DC    |
+| CON5          | Internal Tank Floats    | JST XA 4-pin connector (Red)    | 5V DC    |
+| TX            | IR LED For Capacity     | JST XA 2-pin connector (Yellow) | 5V DC    |
+| RX            | IR Receiver             | JST XA 2-pin connector (Green)  | 5V DC    |
+| AC            | AC Input                | JST VHR 3-pin connector (Black) | 120V AC  |
+| IMN1001       | ???                     | JST XA 7-pin connector (White)  | ???      |
+| CON6          | ???                     | JST XA 6-pin connector (White)  | 5V + ??? |
+| Clean         | ???                     | JST XA 2-pin connector (Cyan)   | ???      |
+| RGB           | ???                     | JST XA 3-pin connector (White)  | 5V + ??? |
+| 1033          | ???                     | JST XA 3-pin connector (Black)  | 5V + ??? |
+| CON3          | ???                     | JST XA 3-pin connector (Red)    | ???      |
+| ???           | ???                     | JST XA 5-pin connector (Black)  | 5V + ??? |
 
 - I2C protocols documented in [`i2c.md`](./reverse-engineering-efforts/i2c.md)
 

@@ -17,7 +17,13 @@ constexpr uint8_t auger = 9;
 constexpr uint8_t fan = 10;
 constexpr uint8_t uv_led = 11;
 constexpr uint8_t pump = 12;
-constexpr uint8_t auger_ammeter = A0;
+constexpr uint8_t buzzer = 13;
+constexpr uint8_t wifi_power = 99; // TODO
+constexpr uint8_t wifi_tx = 99;    // TODO
+// A4 and A5 are used for I2C
+// A6 and A7 are analog only so we leave A1-A3 open as digital pins for
+// future iterations
+constexpr uint8_t auger_ammeter = A7;
 } // namespace pin
 
 // Front Panel
@@ -45,7 +51,17 @@ constexpr uint8_t power = 0x03;
 constexpr uint8_t power_held = 0x04;
 constexpr uint8_t light_held = 0x05;
 constexpr uint8_t clean_held = 0x06;
+constexpr uint8_t clean_power = 0x07;
+constexpr uint8_t clean_light = 0x08;
+constexpr uint8_t power_light = 0x09;
 } // namespace button
+
+// EEPROM store
+namespace store {
+constexpr int enableBuzzer = 1;
+constexpr int enableBinLed = 2;
+constexpr int enableWifi = 3;
+} // namespace store
 
 // Timing & variables
 
@@ -63,7 +79,7 @@ constexpr unsigned long compressor_cooldown = 300000; // 5m
 // error.
 // Note currentDrawLimit is ignored when the compressor first starts to
 // accomodate inrush current. Tweak as needed.
-constexpr float auger_current_draw_limit = 0.55;
+constexpr float auger_current_draw_limit = 0.60;
 constexpr unsigned long auger_inrush_grace = 15000; // 15s for inrush to settle
 constexpr unsigned long defrost_cycle_length = 600000; // 10m
 

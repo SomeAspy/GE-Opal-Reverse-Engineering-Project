@@ -10,15 +10,18 @@ The front panel appears to be communicating with the motherboard over I2C
 
 ## Button Codes (Received from `0x60`)
 
-|  Hex   |     Action      |
-| :----: | :-------------: |
-| `0x00` | Button Released |
-| `0x01` |  Clean Pressed  |
-| `0x02` |  Light Pressed  |
-| `0x03` |  Power Pressed  |
-| `0x04` |   Power Held    |
-| `0x05` |   Light Held    |
-| `0x06` |   Clean Held    |
+|  Hex   |        Action         |
+| :----: | :-------------------: |
+| `0x00` |    Button Released    |
+| `0x01` |     Clean Pressed     |
+| `0x02` |     Light Pressed     |
+| `0x03` |     Power Pressed     |
+| `0x04` |      Power Held       |
+| `0x05` |      Light Held       |
+| `0x06` |      Clean Held       |
+| `0x07` | Power + Clean Pressed |
+| `0x08` | Clean + Light Pressed |
+| `0x09` | Light + Power Pressed |
 
 Note that holding buttons fires both the initial button pressed code and then the Held code after 3 seconds of holding
 
