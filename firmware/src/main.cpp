@@ -73,10 +73,10 @@ void setup() {
   augerMeter.current(pin::auger_ammeter, ammeter_calibration_factor);
 
   if (EEPROM.read(store::enableBuzzer) == 255) {
-    EEPROM.update(store::enableBuzzer, false);
+    EEPROM.update(store::enableBuzzer, true);
   }
   if (EEPROM.read(store::enableBinLed) == 255) {
-    EEPROM.update(store::enableBinLed, true);
+    EEPROM.update(store::enableBinLed, false);
   }
   if (EEPROM.read(store::enableWifi) == 255) {
     EEPROM.update(store::enableWifi, false);
