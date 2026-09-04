@@ -114,7 +114,7 @@ void loop() {
         switch (buttonCode) {
         case button::power_light:
           enableWifi = !enableWifi;
-          EEPROM.update(store::enableWifi, store::enableWifi);
+          EEPROM.update(store::enableWifi, enableWifi);
           break;
         case button::power:
           isPowered = !isPowered;
@@ -127,7 +127,7 @@ void loop() {
           break;
         case button::light_held:
           enableBuzzer = !enableBuzzer;
-          EEPROM.update(store::enableBuzzer, store::enableBuzzer);
+          EEPROM.update(store::enableBuzzer, enableBuzzer);
           break;
         case button::clean_held:
           isCleaning = true;
