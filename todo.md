@@ -18,5 +18,3 @@ I was unable to find a replacement for this version of the board with 7 LEDs, an
 The original GE motherboard has 2 headers for what appears to be RGB, and the [GE Opal Mini Pro](https://www.geappliances.com/appliance/GE-Profile-Opal-Mini-Pro-Nugget-Ice-Maker-with-Side-Tank-P4NM25QZSS) brags about an RGB LED in the features.
 This makes me think the motherboards are mostly unchanged between revisions. I was unable to find parts for this on Ebay.
 Additionally, research points to some other models of the ice maker having RGB lights for [status indication](https://products.geappliances.com/appliance/gea-support-search-content?contentId=39617)
-
-##
