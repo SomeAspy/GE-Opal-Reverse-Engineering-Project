@@ -17,8 +17,6 @@ constexpr uint8_t auger = 9;
 constexpr uint8_t fan = 10;
 constexpr uint8_t uv_led = 11;
 constexpr uint8_t pump = 12;
-constexpr uint8_t wifi_power = 99; // TODO
-constexpr uint8_t wifi_tx = 99;    // TODO
 // A4 and A5 are used for I2C
 // A6 and A7 are analog only so we leave A1-A3 open as digital pins for
 // future iterations
@@ -58,7 +56,6 @@ constexpr uint8_t power_light = 0x09;
 // EEPROM store
 namespace store {
 constexpr int enableBinLed = 1;
-constexpr int enableWifi = 2;
 } // namespace store
 
 // Timing & variables
@@ -81,7 +78,7 @@ constexpr float auger_current_draw_limit = 0.60;
 constexpr unsigned long auger_inrush_grace = 15000; // 15s for inrush to settle
 constexpr unsigned long defrost_cycle_length = 600000; // 10m
 
-constexpr unsigned long bin_full_delay = 10000;
+constexpr unsigned long bin_full_delay = 2000;
 constexpr unsigned long bin_full_pause = 7200000;
 
 // Don't DDoS the front panel microprocessor

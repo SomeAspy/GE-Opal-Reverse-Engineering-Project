@@ -42,7 +42,7 @@ bool isLightOn = false;
 bool isCleaning = false;
 
 // Initialized later by EEPROM
-bool enableBinLed, enableWifi;
+bool enableBinLed;
 
 } // namespace
 
@@ -74,11 +74,7 @@ void setup() {
   if (EEPROM.read(store::enableBinLed) == 255) {
     EEPROM.update(store::enableBinLed, false);
   }
-  if (EEPROM.read(store::enableWifi) == 255) {
-    EEPROM.update(store::enableWifi, false);
-  }
   enableBinLed = EEPROM.read(store::enableBinLed);
-  enableWifi = EEPROM.read(store::enableWifi);
 }
 
 void loop() {
@@ -107,10 +103,6 @@ void loop() {
       auto buttonCode = static_cast<uint8_t>(Wire.read());
       if (buttonCode != lastButtonPress) {
         switch (buttonCode) {
-        case button::power_light:
-          enableWifi = !enableWifi;
-          EEPROM.update(store::enableWifi, enableWifi);
-          break;
         case button::power:
           isPowered = !isPowered;
           tankEmptyHalt = false;
@@ -152,9 +144,6 @@ void loop() {
       }
       if (isCleaning) {
         currentLights |= led::cleaning | led::clean_button;
-      }
-      if (enableWifi) {
-        currentLights |= led::wifi;
       }
       Wire.beginTransmission(front_panel_i2c_address);
       Wire.write(currentLights);
