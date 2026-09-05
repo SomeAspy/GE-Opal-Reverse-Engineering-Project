@@ -17,7 +17,6 @@ constexpr uint8_t auger = 9;
 constexpr uint8_t fan = 10;
 constexpr uint8_t uv_led = 11;
 constexpr uint8_t pump = 12;
-constexpr uint8_t buzzer = 13;
 constexpr uint8_t wifi_power = 99; // TODO
 constexpr uint8_t wifi_tx = 99;    // TODO
 // A4 and A5 are used for I2C
@@ -58,9 +57,8 @@ constexpr uint8_t power_light = 0x09;
 
 // EEPROM store
 namespace store {
-constexpr int enableBuzzer = 1;
-constexpr int enableBinLed = 2;
-constexpr int enableWifi = 3;
+constexpr int enableBinLed = 1;
+constexpr int enableWifi = 2;
 } // namespace store
 
 // Timing & variables

@@ -20,6 +20,18 @@ Important context to a lot of frustration here: This is a $500 dollar ice machin
     - [`prototype-parts.md`](./custom-pcb/prototype/prototype-parts.md) - A list of the exact modules I used for prototyping
     - [`SchematicExport.pdf`](./custom-pcb/prototype/SchematicExport.pdf) - A human readable version of the schematic, made by printing to PDF from KiCAD
 - [`attribution.md`](./attribution.md) - Links and references used for files
+- [`todo.md`](./todo.md) - List of further reseach needed
+
+## To Do
+
+(in no specific order)
+
+- [ ] Reverse engineer and integrate WiFi board from OEM machine
+- [ ] Design PCB
+- [ ] Reverse engineer I2C bus of other front panel [(Need parts)](./todo.md)
+- [ ] On-the-fly dynamic calibration and current limiting of the auger motor (<https://github.com/ElectroRush4u/ACS712> ?)
+- [ ] Design full independent schematic
+- [ ] Reverse engineer GE implementation of the RGB light [(Need parts)](./todo.md)
 
 ## Default button mappings
 
@@ -28,7 +40,6 @@ A few new button actions are defined, and a few changed from the original machin
 - **Power**: Toggles Power
   - **When held**: Triggers a hard reset of the Arduino. _I hope you know what you're doing_
 - **Light**: Toggles Light
-  - **When held**: Toggles the beeper. The beeper is used to audibly communicate the status of the machine.
 - **Clean**: Toggles cleaning mode. In my implentation, there is no timer or anything. It simply forces the pump to run until it is pressed again.
 - **Power + Light**: Toggles the machine's WiFi daughterboard. Physically disconnects power from the board.
 

@@ -42,7 +42,7 @@ bool isLightOn = false;
 bool isCleaning = false;
 
 // Initialized later by EEPROM
-bool enableBuzzer, enableBinLed, enableWifi;
+bool enableBinLed, enableWifi;
 
 } // namespace
 
@@ -68,20 +68,15 @@ void setup() {
   pinMode(pin::uv_led, OUTPUT);
   pinMode(pin::pump, OUTPUT);
   pinMode(pin::bin_led, OUTPUT);
-  pinMode(pin::buzzer, OUTPUT);
 
   augerMeter.current(pin::auger_ammeter, ammeter_calibration_factor);
 
-  if (EEPROM.read(store::enableBuzzer) == 255) {
-    EEPROM.update(store::enableBuzzer, true);
-  }
   if (EEPROM.read(store::enableBinLed) == 255) {
     EEPROM.update(store::enableBinLed, false);
   }
   if (EEPROM.read(store::enableWifi) == 255) {
     EEPROM.update(store::enableWifi, false);
   }
-  enableBuzzer = EEPROM.read(store::enableBuzzer);
   enableBinLed = EEPROM.read(store::enableBinLed);
   enableWifi = EEPROM.read(store::enableWifi);
 }
@@ -125,10 +120,6 @@ void loop() {
           EEPROM.update(store::enableBinLed, isLightOn);
           digitalWrite(pin::bin_led, isLightOn);
           break;
-        case button::light_held:
-          enableBuzzer = !enableBuzzer;
-          EEPROM.update(store::enableBuzzer, enableBuzzer);
-          break;
         case button::clean_held:
           isCleaning = true;
           break;
@@ -136,15 +127,8 @@ void loop() {
           isCleaning = false;
           break;
         case button::power_held:
-          // Tone regardless of buzzer setting, to confirm hard reset.
-          tone(pin::buzzer, 1700, 15);
           wdt_enable(WDTO_15MS);
           delay(10000);
-          break;
-        case button::idle:
-          if (enableBuzzer) {
-            tone(pin::buzzer, 500, 50);
-          }
           break;
         default:;
         }
