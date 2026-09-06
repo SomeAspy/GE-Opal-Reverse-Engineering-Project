@@ -65,8 +65,8 @@ constexpr float ammeter_calibration_factor = 5.76;
 // IRM sample count by Gemini, because I can't be bothered.
 constexpr int irm_sample_count = 1480;
 
-// 2m - Filter can drop flow a lot
-constexpr unsigned long pump_timeout = 120000;
+// 1m - Filter can drop flow a lot
+constexpr unsigned long pump_timeout = 60000;
 constexpr unsigned long compressor_cooldown = 300000; // 5m
 
 // From testing the machine usually settles around 0.45A to 0.48A.
@@ -80,6 +80,3 @@ constexpr unsigned long defrost_cycle_length = 600000; // 10m
 
 constexpr unsigned long bin_full_delay = 2000;
 constexpr unsigned long bin_full_pause = 7200000;
-
-// Don't DDoS the front panel microprocessor
-constexpr unsigned long i2c_communication_delay = 50;

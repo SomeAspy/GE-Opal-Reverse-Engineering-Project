@@ -5,15 +5,12 @@
 #include "Arduino.h"
 #include "constants.h"
 #include <EEPROM.h>
-#include <EmonLib.h>
 #include <Wire.h>
 #include <avr/wdt.h>
 
 namespace {
-EnergyMonitor augerMeter;
 
 // Front panel communication
-unsigned long lastPanelCommunication = 0;
 uint8_t lastButtonPress = button::idle;
 
 // Water management
@@ -69,8 +66,6 @@ void setup() {
   pinMode(pin::pump, OUTPUT);
   pinMode(pin::bin_led, OUTPUT);
 
-  augerMeter.current(pin::auger_ammeter, ammeter_calibration_factor);
-
   if (EEPROM.read(store::enableBinLed) == 255) {
     EEPROM.update(store::enableBinLed, false);
   }
@@ -85,75 +80,60 @@ void loop() {
   const bool isTankEmpty = !digitalRead(pin::tank_empty);
   const bool isBinInserted = !digitalRead(pin::bin_switch);
 
-  Serial.print("TankFull");
-  Serial.println(isTankFull);
-  Serial.print("TankEmpty");
-  Serial.println(isTankEmpty);
-
-  const double currentDraw = augerMeter.calcIrms(irm_sample_count);
-  Serial.print(millis());
-  Serial.print(" ");
-  Serial.println(currentDraw);
-
-  if (millis() - lastPanelCommunication > i2c_communication_delay) {
-    lastPanelCommunication = millis();
-
-    Wire.requestFrom(front_panel_i2c_address, static_cast<uint8_t>(1));
-    if (Wire.available()) {
-      auto buttonCode = static_cast<uint8_t>(Wire.read());
-      if (buttonCode != lastButtonPress) {
-        switch (buttonCode) {
-        case button::power:
-          isPowered = !isPowered;
-          tankEmptyHalt = false;
-          break;
-        case button::light:
-          isLightOn = !isLightOn;
-          EEPROM.update(store::enableBinLed, isLightOn);
-          digitalWrite(pin::bin_led, isLightOn);
-          break;
-        case button::clean_held:
-          isCleaning = true;
-          break;
-        case button::clean:
-          isCleaning = false;
-          break;
-        case button::power_held:
-          wdt_enable(WDTO_15MS);
-          delay(10000);
-          break;
-        default:;
-        }
-        lastButtonPress = buttonCode;
+  Wire.requestFrom(front_panel_i2c_address, static_cast<uint8_t>(1));
+  if (Wire.available()) {
+    auto buttonCode = static_cast<uint8_t>(Wire.read());
+    if (buttonCode != lastButtonPress) {
+      switch (buttonCode) {
+      case button::power:
+        isPowered = !isPowered;
+        tankEmptyHalt = false;
+        break;
+      case button::light:
+        isLightOn = !isLightOn;
+        EEPROM.update(store::enableBinLed, isLightOn);
+        digitalWrite(pin::bin_led, isLightOn);
+        break;
+      case button::clean_held:
+        isCleaning = true;
+        break;
+      case button::clean:
+        isCleaning = false;
+        break;
+      case button::power_held:
+        wdt_enable(WDTO_15MS);
+        delay(10000);
+        break;
+      default:;
       }
-      uint8_t currentLights = 0x0;
-      if (isPowered) {
-        currentLights |= led::power_button;
-      }
-      if (defrostCycle) {
-        currentLights |= led::defrosting;
-      }
-      if (tankEmptyHalt) {
-        currentLights |= led::add_water;
-      }
-      if (isLightOn) {
-        currentLights |= led::light_button;
-      }
-      if (isCompressorRunning) {
-        currentLights |= led::making_ice;
-      }
-      if (isCleaning) {
-        currentLights |= led::cleaning | led::clean_button;
-      }
-      Wire.beginTransmission(front_panel_i2c_address);
-      Wire.write(currentLights);
-      Wire.endTransmission();
+      lastButtonPress = buttonCode;
     }
+    uint8_t currentLights = 0x0;
+    if (isPowered) {
+      currentLights |= led::power_button;
+    }
+    if (defrostCycle) {
+      currentLights |= led::defrosting;
+    }
+    if (tankEmptyHalt) {
+      currentLights |= led::add_water;
+    }
+    if (isLightOn) {
+      currentLights |= led::light_button;
+    }
+    if (isCompressorRunning) {
+      currentLights |= led::making_ice;
+    }
+    if (isCleaning) {
+      currentLights |= led::cleaning | led::clean_button;
+    }
+    Wire.beginTransmission(front_panel_i2c_address);
+    Wire.write(currentLights);
+    Wire.endTransmission();
   }
 
   // When the machine should be stopped
   if (!isPowered || tankEmptyHalt || defrostCycle || binFull || isCleaning) {
-    Serial.println("Machine Stopped");
     if (!isCleaning) {
       digitalWrite(pin::pump, false);
       digitalWrite(pin::uv_led, false);
@@ -196,7 +176,6 @@ void loop() {
   digitalWrite(pin::ir_blaster, true);
   delay(10);
   const bool irReceiving = digitalRead(pin::ir_receiver);
-  Serial.println(irReceiving);
   digitalWrite(pin::ir_blaster, false);
 
   // If the pump doesn't move enough water into the tank, something is wrong
@@ -259,10 +238,10 @@ void loop() {
   // Notably, the original machine has a light for defrost cycle, but I've never
   // seen it trigger, nor do I see a method of monitoring the motor on the
   // original motherboard
-  if (currentDraw >= auger_current_draw_limit &&
-      millis() - compressorStartTime > auger_inrush_grace) {
-    defrostCycle = true;
-    defrostCycleStartTime = millis();
-    return;
-  }
+  // if (currentDraw >= auger_current_draw_limit &&
+  //     millis() - compressorStartTime > auger_inrush_grace) {
+  //   defrostCycle = true;
+  //   defrostCycleStartTime = millis();
+  //   return;
+  // }
 }

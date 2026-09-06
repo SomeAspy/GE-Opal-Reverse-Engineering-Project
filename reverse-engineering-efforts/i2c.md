@@ -2,6 +2,8 @@
 
 The front panel appears to be communicating with the motherboard over I2C
 
+Originally, I had a cooldown on communications to not hammer it with queries, but I found it does not care and will happily answer the arduino's queries hundreds of times a second.
+
 ## Device Addresses
 
 | Address |   Device    |
