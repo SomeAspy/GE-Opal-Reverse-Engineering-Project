@@ -14,6 +14,13 @@ This repository documents, all my attempts to make the GE Opal 2 not kill itself
 
 Important context to a lot of frustration here: This is a $500 dollar ice machine. It has a lifespan of 6 months to 1 year
 
+## Consider sponsoring
+
+I have quite literally dumped hundreds of dollars into this project.
+Some of the biggest costs are prototyping modules, so I don't have to do everything on hand by breadboard.
+
+**Money spent on this project so far: $498.61**
+
 ## Directory
 
 - [`reverse-engineering-efforts/`](./reverse-engineering-efforts) - Generally contains specifics about the hardware of the Opal 2
