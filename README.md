@@ -17,9 +17,10 @@ Important context to a lot of frustration here: This is a $500 dollar ice machin
 ## Consider sponsoring
 
 I have quite literally dumped hundreds of dollars into this project.
-Some of the biggest costs are prototyping modules, so I don't have to do everything on hand by breadboard.
+Some of the biggest costs are prototyping modules, connectors, and parts for the machine.
 
 **Money spent on this project so far: $498.61**
+*this does not factor in my time spent on the project*
 
 ## Directory
 
