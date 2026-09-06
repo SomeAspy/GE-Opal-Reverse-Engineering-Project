@@ -1,3 +1,12 @@
+# ON HOLD
+
+## NOT ABANDONED
+
+Awaiting parts
+
+Using the ACS712 to measure only current as proved unhelpful in recognizing when the motor is struggling.
+I have ordered some HLW8032 modules, but they won't be here until the end of the month.
+
 # GE-Opal-Reverse-Engineering-Project
 
 This repository documents, all my attempts to make the GE Opal 2 not kill itself
