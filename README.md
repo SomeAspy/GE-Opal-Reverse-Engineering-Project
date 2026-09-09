@@ -125,30 +125,30 @@ More importantly, several members of the community have taken attempts to repair
 
 # Nominal voltages recorded from the opal 2 ice maker during operation
 
-_None of the JST XA connectors appear to be genuine. They are cheap clones of the listed connector_
+_I am aware that XHB is not a real standard. However, this is the bastardized cloned modification China has made. it is a JST XH connector with a locking tab. You will not find them on Amazon, or Digikey. I found mine [on Aliexpress](https://www.aliexpress.us/item/3256812673164043.html?spm=a2g0o.order_detail.order_detail_item.3.7c9d126ahviqlg&gatewayAdapt=glo2usa)._
 
-| PCB Label     | Part                    | Connector Type & Color          | Voltage      |
-| ------------- | ----------------------- | ------------------------------- | ------------ |
-| UV            | UV Light                | JST XA 2-pin connector (Blue)   | 12V DC       |
-| compressor    | Compressor              | JST VHR 3-pin connector (Red)   | 120V AC      |
-| motor         | Auger Motor             | JST VHR 3-pin connector (White) | 120V AC      |
-| WP            | Pump                    | JST XA 2-pin connector (Purple) | 12V DC       |
-| FAN1          | Fan                     | JST XA 2-pin connector (Gray)   | 12V DC       |
-| WIFI          | WiFi Board              | JST XA 5-pin connector (White)  | 3.3V + 5V DC |
-| IM1101        | Front Panel             | JST XA 4-pin connector (Black)  | 5V + I2C     |
-| LED11 & LED12 | Ice Box LED(s?)         | JST XA 2-pin connector (White)  | 12V DC       |
-| SW            | Ice box presence switch | JST XA 2-pin connector (Red)    | 5V DC        |
-| CON5          | Internal Tank Floats    | JST XA 4-pin connector (Red)    | 5V DC        |
-| TX            | IR LED For Capacity     | JST XA 2-pin connector (Yellow) | 5V DC        |
-| RX            | IR Receiver             | JST XA 2-pin connector (Green)  | 5V DC        |
-| AC            | AC Input                | JST VHR 3-pin connector (Black) | 120V AC      |
-| IMN1001       | ???                     | JST XA 7-pin connector (White)  | ???          |
-| CON6          | ???                     | JST XA 6-pin connector (White)  | 5V + ???     |
-| Clean         | ???                     | JST XA 2-pin connector (Cyan)   | ???          |
-| RGB           | ???                     | JST XA 3-pin connector (White)  | 5V + ???     |
-| 1033          | ???                     | JST XA 3-pin connector (Black)  | 5V + ???     |
-| CON3          | ???                     | JST XA 3-pin connector (Red)    | ???          |
-| ???           | ???                     | JST XA 5-pin connector (Black)  | 5V + ???     |
+| PCB Label     | Part                    | Connector Type & Color           | Voltage      |
+| ------------- | ----------------------- | -------------------------------- | ------------ |
+| UV            | UV Light                | JST XHB 2-pin connector (Blue)   | 12V DC       |
+| compressor    | Compressor              | JST VHR 3-pin connector (Red)    | 120V AC      |
+| motor         | Auger Motor             | JST VHR 3-pin connector (White)  | 120V AC      |
+| WP            | Pump                    | JST XHB 2-pin connector (Purple) | 12V DC       |
+| FAN1          | Fan                     | JST XHB 2-pin connector (Gray)   | 12V DC       |
+| WIFI          | WiFi Board              | JST XHB 5-pin connector (White)  | 3.3V + 5V DC |
+| IM1101        | Front Panel             | JST XHB 4-pin connector (Black)  | 5V + I2C     |
+| LED11 & LED12 | Ice Box LED(s?)         | JST XHB 2-pin connector (White)  | 12V DC       |
+| SW            | Ice box presence switch | JST XHB 2-pin connector (Red)    | 5V DC        |
+| CON5          | Internal Tank Floats    | JST XHB 4-pin connector (Red)    | 5V DC        |
+| TX            | IR LED For Capacity     | JST XHB 2-pin connector (Yellow) | 5V DC        |
+| RX            | IR Receiver             | JST XHB 2-pin connector (Green)  | 5V DC        |
+| AC            | AC Input                | JST VHR 3-pin connector (Black)  | 120V AC      |
+| IMN1001       | ???                     | JST XHB 7-pin connector (White)  | ???          |
+| CON6          | ???                     | JST XHB 6-pin connector (White)  | 5V + ???     |
+| Clean         | ???                     | JST XHB 2-pin connector (Cyan)   | ???          |
+| RGB           | ???                     | JST XHB 3-pin connector (White)  | 5V + ???     |
+| 1033          | ???                     | JST XHB 3-pin connector (Black)  | 5V + ???     |
+| CON3          | ???                     | JST XHB 3-pin connector (Red)    | ???          |
+| ???           | ???                     | JST XHB 5-pin connector (Black)  | 5V + ???     |
 
 - I2C protocols documented in [`i2c.md`](./reverse-engineering-efforts/i2c.md)
 
