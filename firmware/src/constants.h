@@ -4,6 +4,7 @@
 
 // Pins
 #include <Arduino.h>
+#include <cstdint>
 
 namespace pin {
 constexpr uint8_t ir_receiver = 2;
@@ -17,10 +18,9 @@ constexpr uint8_t auger = 9;
 constexpr uint8_t fan = 10;
 constexpr uint8_t uv_led = 11;
 constexpr uint8_t pump = 12;
-// A4 and A5 are used for I2C
-// A6 and A7 are analog only so we leave A1-A3 open as digital pins for
-// future iterations
-constexpr uint8_t auger_ammeter = A7;
+constexpr uint8_t energy_monitor = A7;
+//  A4 and A5 are used for I2C
+
 } // namespace pin
 
 // Front Panel
@@ -53,17 +53,7 @@ constexpr uint8_t clean_light = 0x08;
 constexpr uint8_t power_light = 0x09;
 } // namespace button
 
-// EEPROM store
-namespace store {
-constexpr int enableBinLed = 1;
-} // namespace store
-
 // Timing & variables
-
-// Calibration factor by gemini, because I hate complex math
-constexpr float ammeter_calibration_factor = 5.76;
-// IRM sample count by Gemini, because I can't be bothered.
-constexpr int irm_sample_count = 1480;
 
 // 1m - Filter can drop flow a lot
 constexpr unsigned long pump_timeout = 60000;
@@ -74,7 +64,7 @@ constexpr unsigned long compressor_cooldown = 300000; // 5m
 // error.
 // Note currentDrawLimit is ignored when the compressor first starts to
 // accomodate inrush current. Tweak as needed.
-constexpr float auger_current_draw_limit = 0.60;
+constexpr double auger_current_draw_limit = 0.60;
 constexpr unsigned long auger_inrush_grace = 15000; // 15s for inrush to settle
 constexpr unsigned long defrost_cycle_length = 600000; // 10m
 

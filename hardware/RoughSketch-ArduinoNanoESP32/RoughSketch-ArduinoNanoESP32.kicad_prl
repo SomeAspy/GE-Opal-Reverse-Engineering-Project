@@ -63,7 +63,7 @@
     "ssh_key": ""
   },
   "meta": {
-    "filename": "rough-schematic-sketch.kicad_prl",
+    "filename": "RoughSketch-ArduinoNanoESP32.kicad_prl",
     "version": 5
   },
   "net_inspector_panel": {

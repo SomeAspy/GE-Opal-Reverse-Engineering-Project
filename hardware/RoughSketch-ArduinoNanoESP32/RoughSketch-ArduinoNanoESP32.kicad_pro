@@ -8,7 +8,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": ""
+      "sch_revision": "2"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -256,7 +256,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "rough-schematic-sketch.kicad_pro",
+    "filename": "RoughSketch-ArduinoNanoESP32.kicad_pro",
     "version": 3
   },
   "net_settings": {
@@ -424,18 +424,18 @@
     "subpart_id_separator": 0,
     "top_level_sheets": [
       {
-        "filename": "rough-schematic-sketch.kicad_sch",
-        "name": "",
-        "uuid": "3caecd39-8377-4639-951b-eef5198ca2fc"
+        "filename": "RoughSketch-ArduinoNanoESP32.kicad_sch",
+        "name": "Root",
+        "uuid": "ba1642f5-234d-4725-94e0-537945808360"
       }
     ],
-    "used_designators": "Q1-5,BZ1,H1,A1-2,D1-6,C1,SW1-6,#PWR1-24,JP1,R1-4,M1-4,MES1,J1,K1-2",
+    "used_designators": "M1-4,K1-2,U1,Q1-5,SW1-3,R1-2,MES1-2,J1,#PWR1-25,D1-7,A1",
     "variants": []
   },
   "sheets": [
     [
-      "3caecd39-8377-4639-951b-eef5198ca2fc",
-      ""
+      "ba1642f5-234d-4725-94e0-537945808360",
+      "Root"
     ]
   ],
   "text_variables": {},

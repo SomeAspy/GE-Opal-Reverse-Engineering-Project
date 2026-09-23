@@ -1,12 +1,5 @@
 # ON HOLD
 
-## NOT ABANDONED
-
-Awaiting parts
-
-Using the ACS712 to measure only current has proved unhelpful in recognizing when the motor is struggling.
-I have ordered some HLW8032 modules, but they won't be here until the end of the month.
-
 # GE-Opal-Reverse-Engineering-Project
 
 This repository documents, all my attempts to make the GE Opal 2 not kill itself
@@ -19,7 +12,7 @@ Important context to a lot of frustration here: This is a $500 dollar ice machin
 I have quite literally dumped hundreds of dollars into this project.
 Some of the costs are prototyping modules, connectors, electronics components, and OEM parts for the machine.
 
-**Money spent on this project so far: $544.65**
+**Money spent on this project so far: $755.98**
 _this does not factor in my time spent on the project_
 
 ## Directory
@@ -31,11 +24,10 @@ _this does not factor in my time spent on the project_
 - [`physical-repairs/`](./physical-repairs) - Details of specific repair efforts
   - [`gearboxRepair.md`](physical-repairs/gearboxRepair.md) - Details about the gearbox and the procedures and parts to fix it
   - [`squeakFromShaft.md`](physical-repairs/squeakFromShaft.md) - Details about a repair attempting to stop the squeaking shaft
-- [`custom-pcb/`](./custom-pcb) - PCB related stuff
-  - [`prototype/`](./custom-pcb/prototype) - Details the rough prototype build with modular components before the PCB fabrication
-    - [`kicadSchematic/`](./custom-pcb/prototype/kicadSchematic) - Directory containing the KiCAD files for the prototype schematic.
-    - [`prototype-parts.md`](./custom-pcb/prototype/prototype-parts.md) - A list of the exact modules I used for prototyping
-    - [`SchematicExport.pdf`](./custom-pcb/prototype/SchematicExport.pdf) - A human readable version of the schematic, made by printing to PDF from KiCAD
+- [`hardware/`](./hardware) - PCB related stuff
+  - [`RoughSketch-ArduinoNanoESP32`](./hardware/RoughSketch-ArduinoNanoESP32) - Details the rough prototype build with modular components before the PCB fabrication
+    - [`prototype-parts.md`](./hardware/RoughSketch-ArduinoNanoESP32/prototype-parts.md) - A list of the exact modules I used for prototyping
+    - [`Schematic.pdf`](./hardware/RoughSketch-ArduinoNanoESP32/Schematic.pdf) - A human readable version of the schematic, made by printing to PDF from KiCAD
 - [`attribution.md`](./attribution.md) - Links and references used for files
 - [`todo.md`](./todo.md) - List of further reseach needed
 
@@ -57,13 +49,6 @@ A few new button actions are defined, and a few changed from the original machin
   - **When held**: Triggers a hard reset of the Arduino. _I hope you know what you're doing_
 - **Light**: Toggles Light
 - **Clean**: Toggles cleaning mode. In my implentation, there is no timer or anything. It simply forces the pump to run until it is pressed again.
-
-**The light setting is stored in the Arduino's EEPROM.**
-
-[The Arduino's EEPROM has a limited lifespan of 100,000 writes.](https://en.wikipedia.org/wiki/EEPROM#:~:text=An%20EEPROM%20has%20a%20limited%20life%20for%20erasing%20and%20reprogramming) So don't go spamming it. As long as you don't press it 100 times a day (which still comes out to about 3 years of use), it should outlast the machine itself.
-
-_Fun fact: EEPROM (and all flash storage) utilize Quantum Tunneling to store data.
-Isn't that cool?_
 
 ## The Prototype
 
@@ -125,7 +110,10 @@ More importantly, several members of the community have taken attempts to repair
 
 # Nominal voltages recorded from the opal 2 ice maker during operation
 
-_I am aware that XHB is not a real standard. However, this is the bastardized cloned modification China has made. it is a JST XH connector with a locking tab. You will not find them on Amazon, or Digikey. I found mine [on Aliexpress](https://www.aliexpress.us/item/3256812673164043.html?spm=a2g0o.order_detail.order_detail_item.3.7c9d126ahviqlg&gatewayAdapt=glo2usa)._
+_I am aware that JST XHB is not a real standard. However, this is the bastardized cloned modification China has made. it is a JST XH connector with a locking tab. You will not find them on Amazon, or Digikey. I found mine [on Aliexpress](https://www.aliexpress.us/item/3256812673164043.html?spm=a2g0o.order_detail.order_detail_item.3.7c9d126ahviqlg&gatewayAdapt=glo2usa)._
+
+_Same applies to JST HY. With some help from the Arduino Community and JLCPCB, I was able to find what appears to be a matching connector.
+[LCSC #C42451574](https://www.lcsc.com/product-detail/C42451574.html)_
 
 | PCB Label     | Part                    | Connector Type & Color           | Voltage      |
 | ------------- | ----------------------- | -------------------------------- | ------------ |
@@ -134,24 +122,42 @@ _I am aware that XHB is not a real standard. However, this is the bastardized cl
 | motor         | Auger Motor             | JST VHR 3-pin connector (White)  | 120V AC      |
 | WP            | Pump                    | JST XHB 2-pin connector (Purple) | 12V DC       |
 | FAN1          | Fan                     | JST XHB 2-pin connector (Gray)   | 12V DC       |
-| WIFI          | WiFi Board              | JST XHB 5-pin connector (White)  | 3.3V + 5V DC |
+| WIFI          | WiFi Board              | JST HY 5-pin connector (White)   | 3.3V + 5V DC |
 | IM1101        | Front Panel             | JST XHB 4-pin connector (Black)  | 5V + I2C     |
 | LED11 & LED12 | Ice Box LED(s?)         | JST XHB 2-pin connector (White)  | 12V DC       |
 | SW            | Ice box presence switch | JST XHB 2-pin connector (Red)    | 5V DC        |
-| CON5          | Internal Tank Floats    | JST XHB 4-pin connector (Red)    | 5V DC        |
+| CON5          | Internal Tank Floats    | JST HY 4-pin connector (Red)     | 5V DC        |
 | TX            | IR LED For Capacity     | JST XHB 2-pin connector (Yellow) | 5V DC        |
 | RX            | IR Receiver             | JST XHB 2-pin connector (Green)  | 5V DC        |
 | AC            | AC Input                | JST VHR 3-pin connector (Black)  | 120V AC      |
-| IMN1001       | ???                     | JST XHB 7-pin connector (White)  | ???          |
-| CON6          | ???                     | JST XHB 6-pin connector (White)  | 5V + ???     |
+| IMN1001       | ???                     | JST HY 7-pin connector (White)   | ???          |
+| CON6          | ???                     | JST HY 6-pin connector (White)   | 5V + ???     |
 | Clean         | ???                     | JST XHB 2-pin connector (Cyan)   | ???          |
 | RGB           | ???                     | JST XHB 3-pin connector (White)  | 5V + ???     |
 | 1033          | ???                     | JST XHB 3-pin connector (Black)  | 5V + ???     |
 | CON3          | ???                     | JST XHB 3-pin connector (Red)    | ???          |
-| ???           | ???                     | JST XHB 5-pin connector (Black)  | 5V + ???     |
+| ???           | ???                     | JST HY 5-pin connector (Black)   | 5V + ???     |
 
 - I2C protocols documented in [`i2c.md`](./reverse-engineering-efforts/i2c.md)
 
 - Internal Tank Floats (4 wires, 2 floats)
   - Black & Red: Lower float (float low = closed circuit)
   - Yellow & White: Upper float (float high = closed circuit)
+
+## FAQ
+
+### Why an ESP32 based board instead of a standard 8-bit Atmel board?
+
+The idea was to keep it simple, but I started running into issues once I got the HLW8032.
+Unlike the ACS712 which uses analog to communicate with the Arduino, the HLW8032 uses serial.
+The original board I was planning to use and prototyping with, the Arduino Nano, only has 1 serial bus. That being the main USB port. This would mean you cannot program the controller while the HLW8032 is connected. I did not like that.
+Furthermore, all the Arduino libraries for reading from the HLW8032 assume 32-bit math, which breaks down on the Arduino Nano.
+
+### What about WiFi? The app?
+
+I decided to completely ignore this, as a WiFi connected ice machine is just stupid.
+Maybe I will add it some day, but there are 2 ways to go about it. The OEM WiFi daughterboard communicates to the motherboard via serial. You can either use that and just pretend to be the OEM motherboard, or you could completely rebuild/reverse-engineer the connection to the SmartHQ app, which... yikes...
+
+### Can I buy a board?
+
+Not yet. Though random Chinese shell corporations keep reaching out to me offering assistance, which I very politely decline.

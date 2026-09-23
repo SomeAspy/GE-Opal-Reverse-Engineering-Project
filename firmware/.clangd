@@ -1,5 +1,14 @@
 CompileFlags:
   CompilationDatabase: ./
+  Add:
+    # This is genuinely awful but the Arduino lib does some weird casting internally
+    - "-Wno-sign-conversion"
+  Remove:
+    # GCC vs. Clang discrepencies
+    - "-mlongcalls"
+    - "-fno-tree-switch-conversion"
+    - "-fanalyzer"
+    - "-fstrict-volatile-bitfields"
 
 Diagnostics:
   ClangTidy:
@@ -19,3 +28,4 @@ Diagnostics:
       - readability-magic-numbers # See above
       - readability-function-cognitive-complexity # no.
       - readability-implicit-bool-conversion # Eh.
+      - cert-err58-cpp # Stupid

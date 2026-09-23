@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // https://github.com/someaspy/GE-Opal-2-fixes
 
-#include "Arduino.h"
 #include "constants.h"
-#include <EEPROM.h>
+#include "hlw8032.h"
+#include <Preferences.h>
 #include <Wire.h>
-#include <avr/wdt.h>
 
 namespace {
 
@@ -41,21 +40,27 @@ bool isCleaning = false;
 // Initialized later by EEPROM
 bool enableBinLed;
 
+HLW8032 energyMonitor;
+
+Preferences store;
+
+// Give the energy monitor serial an acceptable name
+HardwareSerial energySerial(1);
 } // namespace
 
 void setup() {
+  store.begin("store", false);
   Serial.begin(115200);
-  wdt_enable(WDTO_2S);
   Wire.begin();
+  energySerial.begin(4800);
 
   // Grounded inputs need to be pulled up
   pinMode(pin::bin_switch, INPUT_PULLUP);
   pinMode(pin::tank_full, INPUT_PULLUP);
   pinMode(pin::tank_empty, INPUT_PULLUP);
 
-  // Standard inputs
-  pinMode(pin::ir_receiver, INPUT);
-  pinMode(pin::auger_ammeter, INPUT);
+  // Live inputs need to be pulled down
+  pinMode(pin::ir_receiver, INPUT_PULLDOWN);
 
   // Outputs
   pinMode(pin::ir_blaster, OUTPUT);
@@ -66,20 +71,24 @@ void setup() {
   pinMode(pin::pump, OUTPUT);
   pinMode(pin::bin_led, OUTPUT);
 
-  if (EEPROM.read(store::enableBinLed) == 255) {
-    EEPROM.update(store::enableBinLed, false);
+  if (!store.isKey("enableBinLed")) {
+    store.putBool("enableBinLed", false);
   }
-  enableBinLed = EEPROM.read(store::enableBinLed);
+  enableBinLed = store.getBool("enableBinLed");
 }
 
 void loop() {
-  wdt_reset();
   // DIGITAL READS ARE INVERTED BECAUSE WE PULL UP!!!
   // Read values for the current cycle
   const bool isTankFull = !digitalRead(pin::tank_full);
   const bool isTankEmpty = !digitalRead(pin::tank_empty);
   const bool isBinInserted = !digitalRead(pin::bin_switch);
 
+  while (energySerial.available()) {
+    energyMonitor.processData(static_cast<uint8_t>(energySerial.read()));
+  }
+  const float currentVoltage = energyMonitor.getEffectiveVoltage();
+  Serial.println(currentVoltage);
   Wire.requestFrom(front_panel_i2c_address, static_cast<uint8_t>(1));
   if (Wire.available()) {
     auto buttonCode = static_cast<uint8_t>(Wire.read());
@@ -91,7 +100,7 @@ void loop() {
         break;
       case button::light:
         isLightOn = !isLightOn;
-        EEPROM.update(store::enableBinLed, isLightOn);
+        store.putBool("enableBinLed", isLightOn);
         digitalWrite(pin::bin_led, isLightOn);
         break;
       case button::clean_held:
@@ -101,8 +110,7 @@ void loop() {
         isCleaning = false;
         break;
       case button::power_held:
-        wdt_enable(WDTO_15MS);
-        delay(10000);
+        ESP.restart();
         break;
       default:;
       }
@@ -237,11 +245,11 @@ void loop() {
   // Stop the auger from blindly pushing harder when its jammed
   // Notably, the original machine has a light for defrost cycle, but I've never
   // seen it trigger, nor do I see a method of monitoring the motor on the
-  // original motherboard
-  // if (currentDraw >= auger_current_draw_limit &&
-  //     millis() - compressorStartTime > auger_inrush_grace) {
-  //   defrostCycle = true;
-  //   defrostCycleStartTime = millis();
-  //   return;
-  // }
+  // origina; motherboard
+  if (energyMonitor.getActivePower() >= auger_current_draw_limit &&
+      millis() - compressorStartTime > auger_inrush_grace) {
+    defrostCycle = true;
+    defrostCycleStartTime = millis();
+    return;
+  }
 }
