@@ -1,5 +1,3 @@
-# ON HOLD
-
 # GE-Opal-Reverse-Engineering-Project
 
 This repository documents, all my attempts to make the GE Opal 2 not kill itself

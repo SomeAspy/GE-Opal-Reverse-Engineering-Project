@@ -52,7 +52,7 @@ void setup() {
   store.begin("store", false);
   Serial.begin(115200);
   Wire.begin();
-  energySerial.begin(4800);
+  energySerial.begin(4800, SERIAL_8N1, pin::energy_monitor, -1);
 
   // Grounded inputs need to be pulled up
   pinMode(pin::bin_switch, INPUT_PULLUP);
@@ -60,7 +60,7 @@ void setup() {
   pinMode(pin::tank_empty, INPUT_PULLUP);
 
   // Live inputs need to be pulled down
-  pinMode(pin::ir_receiver, INPUT_PULLDOWN);
+  pinMode(pin::ir_receiver, INPUT);
 
   // Outputs
   pinMode(pin::ir_blaster, OUTPUT);
@@ -87,8 +87,6 @@ void loop() {
   while (energySerial.available()) {
     energyMonitor.processData(static_cast<uint8_t>(energySerial.read()));
   }
-  const float currentVoltage = energyMonitor.getEffectiveVoltage();
-  Serial.println(currentVoltage);
   Wire.requestFrom(front_panel_i2c_address, static_cast<uint8_t>(1));
   if (Wire.available()) {
     auto buttonCode = static_cast<uint8_t>(Wire.read());
@@ -183,7 +181,8 @@ void loop() {
   // IR Receiver needs a moment to register it's state
   digitalWrite(pin::ir_blaster, true);
   delay(10);
-  const bool irReceiving = digitalRead(pin::ir_receiver);
+  // Pull up resistor on the IR
+  const bool irReceiving = !digitalRead(pin::ir_receiver);
   digitalWrite(pin::ir_blaster, false);
 
   // If the pump doesn't move enough water into the tank, something is wrong
@@ -245,9 +244,10 @@ void loop() {
   // Stop the auger from blindly pushing harder when its jammed
   // Notably, the original machine has a light for defrost cycle, but I've never
   // seen it trigger, nor do I see a method of monitoring the motor on the
-  // origina; motherboard
-  if (energyMonitor.getActivePower() >= auger_current_draw_limit &&
-      millis() - compressorStartTime > auger_inrush_grace) {
+  // original motherboard
+  const float activePower = energyMonitor.getActivePower();
+  Serial.println(activePower);
+  if (false && millis() - compressorStartTime > auger_inrush_grace) {
     defrostCycle = true;
     defrostCycleStartTime = millis();
     return;
