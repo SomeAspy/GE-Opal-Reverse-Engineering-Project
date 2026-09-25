@@ -247,7 +247,8 @@ void loop() {
   // original motherboard
   const float activePower = energyMonitor.getActivePower();
   Serial.println(activePower);
-  if (false && millis() - compressorStartTime > auger_inrush_grace) {
+  if (activePower >= auger_wattage_draw_limit &&
+      millis() - compressorStartTime > auger_inrush_grace) {
     defrostCycle = true;
     defrostCycleStartTime = millis();
     return;

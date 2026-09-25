@@ -64,7 +64,7 @@ constexpr unsigned long compressor_cooldown = 300000; // 5m
 // error.
 // Note currentDrawLimit is ignored when the compressor first starts to
 // accomodate inrush current. Tweak as needed.
-constexpr float auger_wattage_draw_limit = 28.00;
+constexpr float auger_wattage_draw_limit = 35.00;
 constexpr unsigned long auger_inrush_grace = 15000; // 15s for inrush to settle
 constexpr unsigned long defrost_cycle_length = 600000; // 10m
 

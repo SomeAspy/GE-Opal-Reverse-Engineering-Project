@@ -1,6 +1,6 @@
 # GE-Opal-Reverse-Engineering-Project
 
-This repository documents, all my attempts to make the GE Opal 2 not kill itself
+This repository documents all my attempts to make the GE Opal 2 not kill itself
 (More specifically, the *GE Profile:tm: Opal:tm: 2.0 Ultra Nugget Ice Maker )
 
 Important context to a lot of frustration here: This is a $500 dollar ice machine. It has a lifespan of 6 months to 1 year
@@ -10,14 +10,17 @@ Important context to a lot of frustration here: This is a $500 dollar ice machin
 I have quite literally dumped hundreds of dollars into this project.
 Some of the costs are prototyping modules, connectors, electronics components, and OEM parts for the machine.
 
-**Money spent on this project so far: $755.98**
+**Money spent on this project so far: $768.73**
+
 _this does not factor in my time spent on the project_
+
+(500 dollar ice machine by the way)
 
 ## Directory
 
 - [`reverse-engineering-efforts/`](./reverse-engineering-efforts) - Generally contains specifics about the hardware of the Opal 2
   - [`i2c.md`](./reverse-engineering-efforts/i2c.md) - Details of the I2C implementation in the original machine
-  - [`pipes.d2`](./reverse-engineering-efforts/i2c.md) - D2 file for generating `pipes.svg`
+  - [`pipes.d2`](./reverse-engineering-efforts/pipes.d2) - D2 file for generating `pipes.svg`
   - [`pipes.svg`](./reverse-engineering-efforts/pipes.svg) - How the Opal 2 is plumbed
 - [`physical-repairs/`](./physical-repairs) - Details of specific repair efforts
   - [`gearboxRepair.md`](physical-repairs/gearboxRepair.md) - Details about the gearbox and the procedures and parts to fix it
@@ -27,7 +30,7 @@ _this does not factor in my time spent on the project_
     - [`prototype-parts.md`](./hardware/RoughSketch-ArduinoNanoESP32/prototype-parts.md) - A list of the exact modules I used for prototyping
     - [`Schematic.pdf`](./hardware/RoughSketch-ArduinoNanoESP32/Schematic.pdf) - A human readable version of the schematic, made by printing to PDF from KiCAD
 - [`attribution.md`](./attribution.md) - Links and references used for files
-- [`todo.md`](./todo.md) - List of further reseach needed
+- [`todo.md`](./todo.md) - List of further research needed
 
 ## To Do
 
@@ -46,7 +49,7 @@ A few new button actions are defined, and a few changed from the original machin
 - **Power**: Toggles Power
   - **When held**: Triggers a hard reset of the Arduino. _I hope you know what you're doing_
 - **Light**: Toggles Light
-- **Clean**: Toggles cleaning mode. In my implentation, there is no timer or anything. It simply forces the pump to run until it is pressed again.
+- **Clean**: Toggles cleaning mode. In my implementation, there is no timer or anything. It simply forces the pump to run until it is pressed again.
 
 ## The Prototype
 
@@ -110,8 +113,8 @@ More importantly, several members of the community have taken attempts to repair
 
 _I am aware that JST XHB is not a real standard. However, this is the bastardized cloned modification China has made. it is a JST XH connector with a locking tab. You will not find them on Amazon, or Digikey. I found mine [on Aliexpress](https://www.aliexpress.us/item/3256812673164043.html?spm=a2g0o.order_detail.order_detail_item.3.7c9d126ahviqlg&gatewayAdapt=glo2usa)._
 
-_Same applies to JST HY. With some help from the Arduino Community and JLCPCB, I was able to find what appears to be a matching connector.
-[LCSC #C42451574](https://www.lcsc.com/product-detail/C42451574.html)_
+_Same applies to JST HY. With some help from ~~the Arduino Community~~[^1] a specific member of the Arduino community and JLCPCB, I was able to find what appears to be a matching connector.
+~~[LCSC #C42451574](https://www.lcsc.com/product-detail/C42451574.html)~~_) (Not quite it yet)
 
 | PCB Label     | Part                    | Connector Type & Color           | Voltage      |
 | ------------- | ----------------------- | -------------------------------- | ------------ |
@@ -158,4 +161,14 @@ Maybe I will add it some day, but there are 2 ways to go about it. The OEM WiFi 
 
 ### Can I buy a board?
 
-Not yet. Though random Chinese shell corporations keep reaching out to me offering assistance, which I very politely decline.
+Not yet.
+
+## Special Thanks
+
+- My Grandfather, a retired Raytheon engineer for verifying my 120v components
+- The Adafruit Discord team for being wholly interested in my project [Join their Discord](http://adafru.it/discord)
+- Gan, from the JLCPCB team for helping me hunt down the weird connectors GE used
+- Carlos, from the Arduino support team for verifying my intuition that the Nano ESP can drive several hundred mA
+- bitSmith, a volunteer moderator of the official Discord Arduino community for banning me and my younger brother for absolutely no reason - leading to me finding the Adafruit Discord
+
+[^1]: A massive shoutout to the "Official" Arduino Discord volunteer moderation team (_**bitSmith**_), who permanently banned me (and my younger brother, despite having no involvement except association) from their Discord server and belittled me and talked to me in a condescending way when I was migrating to ESP32. If you are reading this, yes, the Arduino Nano ESP32 CAN power 2 relays on the 3.3v line because it has a regulator that can easily handle 1A. To quote bitSmith, it will not work "because of physics. and logic." I later emailed Arduino directly asking for clarification, and yes, it can handle 1A.
