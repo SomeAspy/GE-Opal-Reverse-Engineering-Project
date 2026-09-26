@@ -171,4 +171,11 @@ Not yet.
 - Carlos, from the Arduino support team for verifying my intuition that the Nano ESP can drive several hundred mA
 - bitSmith, a volunteer moderator of the official Discord Arduino community for banning me and my younger brother for absolutely no reason - leading to me finding the Adafruit Discord
 
+## Legal stuff
+
+- The designs and software within are provided as-is without warranty of any kind, express or implied
+- GE, GE Profile, Opal, Adafruit, ESP32, and Arduino trademarks are property of their respective owners. In no way do they endorse the contents contained within.
+- This project utilizes mains voltage. Use at your own risk. You have been warned.
+- This project uses 2 licenses, GPLv3 for the code and Creative Commons Attribution-NonCommercial 4.0 International for the hardware designs. Exemptions may be requested by contacting me.
+
 [^1]: A massive shoutout to the "Official" Arduino Discord volunteer moderation team (_**bitSmith**_), who permanently banned me (and my younger brother, despite having no involvement except association) from their Discord server and belittled me and talked to me in a condescending way when I was migrating to ESP32. If you are reading this, yes, the Arduino Nano ESP32 CAN power 2 relays on the 3.3v line because it has a regulator that can easily handle 1A. To quote bitSmith, it will not work "because of physics. and logic." I later emailed Arduino directly asking for clarification, and yes, it can handle 1A.
