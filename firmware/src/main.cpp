@@ -2,10 +2,14 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // https://github.com/someaspy/GE-Opal-2-fixes
 
+#include "WString.h"
 #include "constants.h"
 #include "hlw8032.h"
 #include <Preferences.h>
 #include <Wire.h>
+#include <algorithm>
+#include <hd44780.h>
+#include <hd44780ioClass/hd44780_I2Cexp.h>
 
 namespace {
 
@@ -46,6 +50,8 @@ Preferences store;
 
 // Give the energy monitor serial an acceptable name
 HardwareSerial energySerial(1);
+hd44780_I2Cexp lcd;
+float maxPowerSeen = 0;
 } // namespace
 
 void setup() {
@@ -75,6 +81,10 @@ void setup() {
     store.putBool("enableBinLed", false);
   }
   enableBinLed = store.getBool("enableBinLed");
+  lcd.begin(20, 4);
+  lcd.backlight();
+  lcd.setCursor(0, 2);
+  lcd.print("Max: " + static_cast<String>(auger_wattage_draw_limit) + " Watts");
 }
 
 void loop() {
@@ -246,7 +256,12 @@ void loop() {
   // seen it trigger, nor do I see a method of monitoring the motor on the
   // original motherboard
   const float activePower = energyMonitor.getActivePower();
+  maxPowerSeen = max(activePower, maxPowerSeen);
   Serial.println(activePower);
+  lcd.setCursor(0, 0); // Column 0, Row 0
+  lcd.print(static_cast<String>(activePower) + " Watts");
+  lcd.setCursor(0, 1); // Column 0, Row 1
+  lcd.print("Max observed: " + static_cast<String>(maxPowerSeen));
   if (activePower >= auger_wattage_draw_limit &&
       millis() - compressorStartTime > auger_inrush_grace) {
     defrostCycle = true;
