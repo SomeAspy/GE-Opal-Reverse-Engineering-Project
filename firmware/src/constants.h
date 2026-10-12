@@ -65,8 +65,13 @@ constexpr unsigned long compressor_cooldown = 300000; // 5m
 // Note currentDrawLimit is ignored when the compressor first starts to
 // accomodate inrush current. Tweak as needed.
 constexpr float auger_wattage_draw_limit = 39.00;
-constexpr unsigned long auger_inrush_grace = 15000; // 15s for inrush to settle
+constexpr unsigned long auger_inrush_grace = 2000; // 2s for inrush to settle
 constexpr unsigned long defrost_cycle_length = 600000; // 10m
 
 constexpr unsigned long bin_full_delay = 10000;
 constexpr unsigned long bin_full_pause = 7200000;
+
+// Cleaning details
+constexpr unsigned long clean_pump_run_time = 300000; // 5m
+constexpr unsigned long clean_sit_time = 2700000;     // 45m
+constexpr int clean_cycles = 5;

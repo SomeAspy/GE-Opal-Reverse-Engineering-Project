@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // https://github.com/someaspy/GE-Opal-2-fixes
 
-#include "WString.h"
 #include "constants.h"
+#include "esp32-hal-gpio.h"
 #include "hlw8032.h"
 #include <Preferences.h>
 #include <Wire.h>
-#include <algorithm>
 #include <hd44780.h>
 #include <hd44780ioClass/hd44780_I2Cexp.h>
 
@@ -52,6 +51,10 @@ Preferences store;
 HardwareSerial energySerial(1);
 hd44780_I2Cexp lcd;
 float maxPowerSeen = 0;
+
+int cleanCyclesRan = 0;
+unsigned long sitCycleStartedTime = 0;
+unsigned long pumpCycleStartedTime = 0;
 } // namespace
 
 void setup() {
@@ -153,13 +156,36 @@ void loop() {
     if (!isCleaning) {
       digitalWrite(pin::pump, false);
       digitalWrite(pin::uv_led, false);
+      digitalWrite(pin::auger, false);
+      cleanCyclesRan = 0;
+      pumpCycleStartedTime = 0;
+      sitCycleStartedTime = 0;
+
     } else {
-      digitalWrite(pin::pump, true);
-      digitalWrite(pin::uv_led, true);
+      isPowered = false;
+      if (cleanCyclesRan < clean_cycles) {
+        if (pumpCycleStartedTime == 0) {
+          pumpCycleStartedTime = millis();
+        } else if (millis() - pumpCycleStartedTime < clean_pump_run_time) {
+          digitalWrite(pin::pump, true);
+          digitalWrite(pin::auger, true);
+        } else {
+          digitalWrite(pin::pump, false);
+          digitalWrite(pin::auger, false);
+          if (sitCycleStartedTime == 0) {
+            sitCycleStartedTime = millis();
+          } else if (millis() - sitCycleStartedTime > clean_sit_time) {
+            pumpCycleStartedTime = 0;
+            sitCycleStartedTime = 0;
+            ++cleanCyclesRan;
+          }
+        }
+      } else {
+        isCleaning = false;
+      }
     }
     digitalWrite(pin::compressor, false);
     digitalWrite(pin::fan, false);
-    digitalWrite(pin::auger, false);
     pumping = false;
 
     // Start compressor cooldown
@@ -202,8 +228,8 @@ void loop() {
     return;
   }
 
-  // Don't stop pumping once the lower float rises, so we can fill it up to the
-  // upper float to save pump spam
+  // Don't stop pumping once the lower float rises, so we can fill it up to
+  // the upper float to save pump spam
   if (isTankEmpty && !pumping) {
     digitalWrite(pin::uv_led, true);
     digitalWrite(pin::pump, true);
@@ -219,8 +245,8 @@ void loop() {
   }
 
   // If IR LOS is broken, there is either ice actively falling or the bin is
-  // full to rule out the first case, wait for the IR sensor to lose LOS for the
-  // delay specified in bin_full_delay
+  // full to rule out the first case, wait for the IR sensor to lose LOS for
+  // the delay specified in bin_full_delay
   if (irReceiving) {
     binCheck = 0;
   }
@@ -252,11 +278,13 @@ void loop() {
   }
 
   // Stop the auger from blindly pushing harder when its jammed
-  // Notably, the original machine has a light for defrost cycle, but I've never
-  // seen it trigger, nor do I see a method of monitoring the motor on the
-  // original motherboard
+  // Notably, the original machine has a light for defrost cycle, but I've
+  // never seen it trigger, nor do I see a method of monitoring the motor on
+  // the original motherboard
   const float activePower = energyMonitor.getActivePower();
-  maxPowerSeen = max(activePower, maxPowerSeen);
+  if (!isinff(activePower)) {
+    maxPowerSeen = max(activePower, maxPowerSeen);
+  }
   Serial.println(activePower);
   lcd.setCursor(0, 0); // Column 0, Row 0
   lcd.print(static_cast<String>(activePower) + " Watts");

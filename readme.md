@@ -49,7 +49,7 @@ A few new button actions are defined, and a few changed from the original machin
 - **Power**: Toggles Power
   - **When held**: Triggers a hard reset of the Arduino. _I hope you know what you're doing_
 - **Light**: Toggles Light
-- **Clean**: Toggles cleaning mode. In my implementation, there is no timer or anything. It simply forces the pump to run until it is pressed again.
+- **Clean**: Toggles cleaning mode. Will run the pump for X minutes (5 by default) then let the liquid sit for Y minutes (45 by default.) and will loop this Z amount of times (default 5) **To use this properly:** Fill tank with descaler/citric acid/vinegar and initiate the clean cycle. Once that finishes, the cleaning light will turn off. Drain the machine, refill with water, start another clean cycle. Drain water once done. Repeat with Bleach dilution if sanitizing is intended. Drain bleach dilution. Fill with water. start another clean cycle. Drain. Machine is now ready for normal use. **NEVER MIX BLEACH WITH ANY OTHER CHEMICAL/DESCALING SOLUTION.**
 
 ## The Prototype
 
