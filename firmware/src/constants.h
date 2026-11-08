@@ -55,8 +55,8 @@ constexpr uint8_t power_light = 0x09;
 
 // Timing & variables
 
-// 1m - Filter can drop flow a lot
-constexpr unsigned long pump_timeout = 60000;
+// 20s
+constexpr unsigned long pump_timeout = 20000;
 constexpr unsigned long compressor_cooldown = 300000; // 5m
 
 // From testing the machine usually settles around 0.45A to 0.48A.
@@ -65,13 +65,12 @@ constexpr unsigned long compressor_cooldown = 300000; // 5m
 // Note currentDrawLimit is ignored when the compressor first starts to
 // accomodate inrush current. Tweak as needed.
 constexpr float auger_wattage_draw_limit = 39.00;
-constexpr unsigned long auger_inrush_grace = 2000; // 2s for inrush to settle
 constexpr unsigned long defrost_cycle_length = 600000; // 10m
 
 constexpr unsigned long bin_full_delay = 10000;
 constexpr unsigned long bin_full_pause = 7200000;
 
 // Cleaning details
-constexpr unsigned long clean_pump_run_time = 300000; // 5m
-constexpr unsigned long clean_sit_time = 2700000;     // 45m
+constexpr unsigned long clean_pump_run_time = 120000; // 2m
+constexpr unsigned long clean_sit_time = 1800000;     // 30m
 constexpr int clean_cycles = 5;

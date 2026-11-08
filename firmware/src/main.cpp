@@ -7,6 +7,7 @@
 #include "hlw8032.h"
 #include <Preferences.h>
 #include <Wire.h>
+#include <cmath>
 #include <hd44780.h>
 #include <hd44780ioClass/hd44780_I2Cexp.h>
 
@@ -282,7 +283,7 @@ void loop() {
   // never seen it trigger, nor do I see a method of monitoring the motor on
   // the original motherboard
   const float activePower = energyMonitor.getActivePower();
-  if (!isinff(activePower)) {
+  if (!isinff(activePower) || !isnan(activePower)) {
     maxPowerSeen = max(activePower, maxPowerSeen);
   }
   Serial.println(activePower);
@@ -290,8 +291,7 @@ void loop() {
   lcd.print(static_cast<String>(activePower) + " Watts");
   lcd.setCursor(0, 1); // Column 0, Row 1
   lcd.print("Max observed: " + static_cast<String>(maxPowerSeen));
-  if (activePower >= auger_wattage_draw_limit &&
-      millis() - compressorStartTime > auger_inrush_grace) {
+  if (activePower >= auger_wattage_draw_limit) {
     defrostCycle = true;
     defrostCycleStartTime = millis();
     return;
