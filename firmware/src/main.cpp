@@ -282,7 +282,7 @@ void loop() {
   // Notably, the original machine has a light for defrost cycle, but I've
   // never seen it trigger, nor do I see a method of monitoring the motor on
   // the original motherboard
-  const float activePower = energyMonitor.getActivePower();
+  float activePower = energyMonitor.getActivePower();
   if (!isinff(activePower) || !isnan(activePower)) {
     maxPowerSeen = max(activePower, maxPowerSeen);
   }
@@ -292,6 +292,8 @@ void loop() {
   lcd.setCursor(0, 1); // Column 0, Row 1
   lcd.print("Max observed: " + static_cast<String>(maxPowerSeen));
   if (activePower >= auger_wattage_draw_limit) {
+    // Set power usage to 0 so it doesnt lockup after the defrost again
+    activePower = 0;
     defrostCycle = true;
     defrostCycleStartTime = millis();
     return;
